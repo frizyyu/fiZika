@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пушка и снаряд</title>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+<header class="header">
+    <div class="container">
+        <h1 class="header__heading">Моделирование движения пушки и снаряда</h1>
+    </div>
+</header>
+<main class="main">
+    <div class="container">
+        <div class="main__inner">
+            <div class="main__above">
+                <div class="main__input">
+                    <div>
+                        <label for="angle">Угол α (градусы):</label>
+                        <input type="number" id="angle" value="45">
+                    </div>
+                    <div>
+                        <label for="mass-cart">Масса пушки (M):</label>
+                        <input type="number" id="mass-cart" value="1000">
+                    </div>
+                    <div>
+                        <label for="mass-kernel">Масса снаряда (m):</label>
+                        <input type="number" id="mass-kernel" value="10">
+                    </div>
+                    <div>
+                        <label for="start-speed">Начальная скорость (v<sub>0</sub>):</label>
+                        <input type="number" id="start-speed" value="100">
+                    </div>
+                    <div>
+                        <label for="gravity">Ускорение свободного падения (g):</label>
+                        <input type="number" id="gravity" value="9.81">
+                    </div>
+                    <div>
+                        <label for="size-cart">Высота пушки (h):</label>
+                        <input type="number" id="size-cart" value="9.81">
+                    </div>
+                    <div>
+                        <label for="size-kernel">Объём снаряда (V):</label>
+                        <input type="number" id="size-kernel" value="9.81">
+                    </div>
+                    <div>
+                        <label for="is-lock">Разблокировать колёса</label>
+                        <input type="checkbox" id="is-lock">
+                    </div>
+                </div>
+                <div class="main__exec">
+                    <div class="exec-item">
+                        <label>Координаты: </label>
+                        <br>
+                        <label class="tab">X: </label><label class="x-coord" id="x-coord">тут будет цифра из js</label>
+                        <br>
+                        <label class="tab">Y: </label><label class="y-coord" id="y-coord">тут будет цифра из js</label>
+                    </div>
+                    <div class="exec-item">
+                        <label>Скорость (v): </label><label class="speed" id="speed">тут будет цифра из js</label>
+                    </div>
+                    <div class="exec-item">
+                        <label>Время (t): </label><label class="time" id="time">тут будет цифра из js</label>
+                    </div>
+                    <div class="exec-item">
+                        <label>Дальность (L): </label><label class="range" id="range">тут будет цифра из js</label>
+                    </div>
+                    <div class="exec-item">
+                        <label>Максимальная высота подъёма (H): </label><label class="max-height" id="max-height">тут будет цифра из js</label>
+                    </div>
+                </div>
+                <div class="main__reqs">
+                    <table>
+                        <tr>
+                            <th>α</th>
+                            <th>M</th>
+                            <th>m</th>
+                            <th>v<sub>0</sub></th>
+                            <th>g</th>
+                            <th>h</th>
+                            <th>V</th>
+                        </tr>
+                        <tr>
+                            <td>а</td>
+                            <td>a</td>
+                            <td>а</td>
+                            <td>а</td>
+                            <td>а</td>
+                            <td>а</td>
+                            <td>а</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <canvas id="display" class="main__display"></canvas>
+            <div class="main__below">
+                <label>
+                    <input type="range" class="main__time-slider time-slider">
+                </label>
+                <button class="main__start">зуб :(</button>
+            </div>
+        </div>
+    </div>
+</main>
+<footer class="footer">
+    <div class="container">
+        <h1 class="footer__pedik">Алексеев Андрей P3219; Васильев Артём P3219</h1>
+    </div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
