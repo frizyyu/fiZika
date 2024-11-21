@@ -55,17 +55,25 @@ html, body {
     font-size: 26px;
     font-weight: 400;
     line-height: 1;
+    letter-spacing: 0.05em;
 }
 
 .heading, .text {
     color: #FFFFFF;
-    letter-spacing: 0;
 }
 
-.index {
+sub, sup {
     position: relative;
     bottom: -0.25em;
     font-size: 75%;
     line-height: 0;
     vertical-align: baseline;
+}
+
+sup {
+    bottom: 0.5em;
+}
+
+.disabled {
+    display: none !important;
 }

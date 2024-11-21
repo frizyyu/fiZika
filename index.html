@@ -15,52 +15,82 @@
     <div class="main__container swiper-container">
         <div class="main__pages pages swiper-wrapper">
             <div class="fst-page page swiper-slide">
-                <div class="fst-page__inner">
-                    <h1 class="fst-page__heading heading">Моделирование движения пушки и снаряда</h1>
-                    <div class="fst-page__body">
-                        <div class="container">
-                            <div class="fst-page__inner">
+                <div class="container">
+                    <div class="fst-page__inner">
+                        <h1 class="fst-page__heading heading">Моделирование движения пушки и снаряда</h1>
+                        <div class="fst-page__body">
+                            <div class="fst-page__interaction">
                                 <div class="fst-page__input input block">
                                     <ul class="input__list">
                                         <li class="input__item">
-                                            <label for="alpha" class="input__label">α&thinsp;:</label>
-                                            <input type="text" id="alpha" placeholder="Угол в градусах" class="input__field text-field text">
+                                            <label for="alpha" class="input__text">α&thinsp;(&#xb0;)&thinsp;:</label>
+                                            <input type="text" id="alpha" placeholder="Угол"
+                                                   autocomplete="off" class="input__field text-field text">
                                         </li>
                                         <li class="input__item">
-                                            <label for="m-gun" class="input__text">M&thinsp;:</label>
-                                            <input type="text" id="m-gun" placeholder="Масса пушки" class="input__field text-field text non-neg">
+                                            <label for="m-gun" class="input__text">M&thinsp;(кг)&thinsp;:</label>
+                                            <input type="text" id="m-gun" placeholder="Масса пушки" autocomplete="off"
+                                                   class="input__field text-field text">
                                         </li>
                                         <li class="input__item">
-                                            <label for="m-kernel" class="input__text">m&thinsp;:</label>
-                                            <input type="text" id="m-kernel" placeholder="Масса снаряда" class="input__field text-field text non-neg">
+                                            <label for="m-kernel" class="input__text">m&thinsp;(кг)&thinsp;:</label>
+                                            <input type="text" id="m-kernel" placeholder="Масса снаряда"
+                                                   autocomplete="off" class="input__field text-field text">
                                         </li>
                                         <li class="input__item">
-                                            <label for="v0" class="input__text">v<sub class="index">0</sub>&thinsp;:</label>
-                                            <input type="text" id="v0" placeholder="Начальная скорость снаряда" class="input__field text-field text non-neg">
+                                            <label for="v0" class="input__text">v<sub>0</sub>&thinsp;(м/с)&thinsp;:</label>
+                                            <input type="text" id="v0" placeholder="Начальная скорость снаряда"
+                                                   autocomplete="off" class="input__field text-field text">
                                         </li>
                                         <li class="input__item">
-                                            <label for="g" class="input__text">g&thinsp;:</label>
-                                            <input type="text" id="g" placeholder="Ускорение свободного падение" class="input__field text-field text non-neg">
+                                            <label for="g" class="input__text">g&thinsp;(м/с<sup>2</sup>)&thinsp;:</label>
+                                            <input type="text" id="g" placeholder="Ускорение свободного падение"
+                                                   autocomplete="off" class="input__field text-field text">
                                         </li>
                                         <li class="input__item">
-                                            <label for="h" class="input__text">h&thinsp;:</label>
-                                            <input type="text" id="h" placeholder="Высота пушки" class="input__field text-field text non-neg">
+                                            <label for="h" class="input__text">h&thinsp;(м)&thinsp;:</label>
+                                            <input type="text" id="h" placeholder="Высота пушки" autocomplete="off"
+                                                   class="input__field text-field text">
                                         </li>
                                         <li class="input__item">
-                                            <label for="V" class="input__text">v&thinsp;:</label>
-                                            <input type="text" id="V" placeholder="Объем снаряда" class="input__field text-field text non-neg">
+                                            <label for="V" class="input__text">V&thinsp;(м/с<sup>3</sup>)&thinsp;:</label>
+                                            <input type="text" id="V" placeholder="Объем снаряда" autocomplete="off"
+                                                   class="input__field text-field text">
                                         </li>
                                         <li class="input__item">
                                             <label>
                                                 <span class="input__text">Разблокировать колеса&thinsp;:</span>
-                                                <input type="checkbox" id="wheels" class="input__field checkbox">
+                                                <input type="checkbox" id="wheels" autocomplete="off"
+                                                       class="input__field checkbox">
                                                 <span class="checkbox-style"></span>
                                             </label>
                                         </li>
                                     </ul>
                                 </div>
-                                <button class="fst-page__generate generate block text">Генерировать</button>
+                                <div class="fst-page__constraints constraints block">
+                                    <ul class="constraints__list">
+                                        <li class="constraints__item">
+                                            <p class="constraints__text">0 ≤ α ≤ 90</p>
+                                        </li>
+                                        <li class="constraints__item">
+                                            <p class="constraints__text">0 < m < M</p>
+                                        </li>
+                                        <li class="constraints__item">
+                                            <p class="constraints__text">v<sub>0</sub> > 0</p>
+                                        </li>
+                                        <li class="constraints__item">
+                                            <p class="constraints__text">g > 0</p>
+                                        </li>
+                                        <li class="constraints__item">
+                                            <p class="constraints__text">h > 0</p>
+                                        </li>
+                                        <li class="constraints__item">
+                                            <p class="constraints__text">V > 0</p>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
+                            <button class="fst-page__generate generate block text">Генерировать</button>
                         </div>
                     </div>
                 </div>
@@ -68,53 +98,71 @@
             <div class="snd-page page swiper-slide">
                 <div class="container">
                     <div class="snd-page__inner">
-                        <div class="snd-page__pic">
+                        <div class="snd-page__left">
                             <canvas class="snd-page__display display block"></canvas>
                             <div class="info__time-slider time-slider slider-container"></div>
                         </div>
-                        <div class="snd-page__info info block">
-                            <ul class="info__list">
-                                <li class="info__item">
-                                    <p class="info__option">X&thinsp;:</p>
-                                    <p class="info__value"></p>
-                                </li>
-                                <li class="info__item">
-                                    <p class="info__option">Y&thinsp;:</p>  
-                                    <p class="info__value"></p>
-                                </li>
-                                <li class="info__item">
-                                    <p class="info__option">t<sub class="index">пол</sub>&thinsp;:</p>
-                                    <p class="info__value"></p>
-                                </li>
-                                <li class="info__item">
-                                    <p class="info__option">t<sub class="index">тек</sub>&thinsp;:</p>
-                                    <p class="info__value"></p>
-                                </li>
-                                <li class="info__item">
-                                    <p class="info__option">v&thinsp;:</p>
-                                    <p class="info__value"></p>
-                                </li>
-                                <li class="info__item">
-                                    <p class="info__option">v<sub class="index">x</sub>&thinsp;:</p>
-                                    <p class="info__value"></p>
-                                </li>
-                                <li class="info__item">
-                                    <p class="info__option">v<sub class="index">y</sub>&thinsp;:</p>
-                                    <p class="info__value"></p>
-                                </li>
-                                <li class="info__item">
-                                    <p class="info__option">L&thinsp;:</p>
-                                    <p class="info__value"></p>
-                                </li>
-                                <li class="info__item">
-                                    <p class="info__option">H&thinsp;:</p>
-                                    <p class="info__value"></p>
-                                </li>
-                            </ul>
+                        <div class="snd-page__right">
+                            <div class="snd-page__info info block">
+                                <ul class="info__list">
+                                    <li class="info__item">
+                                        <p class="info__option">X&thinsp;(м)&thinsp;:</p>
+                                        <p class="info__value"></p>
+                                    </li>
+                                    <li class="info__item">
+                                        <p class="info__option">Y&thinsp;(м)&thinsp;:</p>
+                                        <p class="info__value"></p>
+                                    </li>
+                                    <li class="info__item">
+                                        <p class="info__option">T&thinsp;(с)&thinsp;:</p>
+                                        <p class="info__value"></p>
+                                    </li>
+                                    <li class="info__item">
+                                        <p class="info__option">t&thinsp;(с)&thinsp;:</p>
+                                        <p class="info__value"></p>
+                                    </li>
+                                    <li class="info__item">
+                                        <p class="info__option">v&thinsp;(м/с)&thinsp;:</p>
+                                        <p class="info__value"></p>
+                                    </li>
+                                    <li class="info__item">
+                                        <p class="info__option">v<sub>x</sub>&thinsp;(м/с)&thinsp;:</p>
+                                        <p class="info__value"></p>
+                                    </li>
+                                    <li class="info__item">
+                                        <p class="info__option">v<sub>y</sub>&thinsp;(м/с)&thinsp;:</p>
+                                        <p class="info__value"></p>
+                                    </li>
+                                    <li class="info__item">
+                                        <p class="info__option">u&thinsp;(м/с)&thinsp;:</p>
+                                        <p class="info__value"></p>
+                                    </li>
+                                    <li class="info__item">
+                                        <p class="info__option">L&thinsp;(м)&thinsp;:</p>
+                                        <p class="info__value"></p>
+                                    </li>
+                                    <li class="info__item">
+                                        <p class="info__option">H&thinsp;(м)&thinsp;:</p>
+                                        <p class="info__value"></p>
+                                    </li>
+                                    <li class="info__item">
+                                        <p class="info__option">k:</p>
+                                        <p class="info__value"></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button class="snd-page__simulate block text">Симулировать</button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="main__error error blackout disabled">
+        <div class="error__body block">
+            <div class="error__close block"></div>
+            <h1 class="error__heading heading">Ошибка!</h1>
+            <p class="error__message">Ну что это такое. тебе делать нечего. что ли иди и читай книжку.собирай кубик рубика</p>
         </div>
     </div>
 </main>
