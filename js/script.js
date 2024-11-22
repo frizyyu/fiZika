@@ -9,7 +9,9 @@ const rad = deg => deg * PI / 180;
 
 // import Swiper from 'swiper' // fix Swiper IDE warns
 
-const pages = new Swiper('.main__container', {
+const pagesContainer = document.querySelector('.pages-container');
+
+const fullPageSlider = new Swiper('.pages-container', {
     direction: 'vertical',
     speed: 600,
     slidesPerView: 1,
@@ -20,6 +22,12 @@ const pages = new Swiper('.main__container', {
     allowTouchMove: false,
     keyboard: false,
     touchStartPreventDefault: false,
+    on: {
+        slideChangeTransitionStart: function () {
+            const percentYOffset = this.activeIndex / (this.slides.length - 1) * 100;
+            pagesContainer.style.backgroundPosition = `center ${percentYOffset}%`;
+        }
+    }
 });
 
 // -------------------------------------------------------------------------------------------------------- //
@@ -27,15 +35,15 @@ const pages = new Swiper('.main__container', {
 let sliderChangeAllowed = false;
 
 function allowSliderChange() {
-    pages.params.allowTouchMove = true;
+    fullPageSlider.params.allowTouchMove = true;
 
-    pages.params.mousewheel.enabled = true;
-    pages.mousewheel.enable();
+    fullPageSlider.params.mousewheel.enabled = true;
+    fullPageSlider.mousewheel.enable();
 
-    pages.params.keyboard.enabled = true;
-    pages.keyboard.enable();
+    fullPageSlider.params.keyboard.enabled = true;
+    fullPageSlider.keyboard.enable();
 
-    pages.update();
+    fullPageSlider.update();
 
     sliderChangeAllowed = true;
 }
@@ -198,7 +206,7 @@ function generate() {
 
     allowTimeBarUpdate();
 
-    pages.slideNext();
+    fullPageSlider.slideNext();
 }
 
 const genBtn = document.querySelector('.generate');
