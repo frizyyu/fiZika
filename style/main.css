@@ -187,26 +187,26 @@
     height: 100%;
 }
 
-.info {
+.log {
     margin-bottom: auto;
 }
 
-.info__list {
+.log__list {
     width: 300px;
     margin: 0 35px; /* normal - 0 40px*/
 }
 
-.info__item {
+.log__item {
     display: flex;
     justify-content: space-between;
     margin: 35px 0; /* normal - 0 40px*/
 }
 
-.info__option {
+.log__option {
     white-space: nowrap;
 }
 
-.info__value {
+.log__value {
     font-weight: 400;
 }
 

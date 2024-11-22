@@ -1,8 +1,13 @@
-MAX_DECIMAL_PLACES = 2;
+const MAX_DECIMAL_PLACES = 2;
 
 // -------------------------------------------------------------------------------------------------------- //
 
-// import Swiper from 'swiper' // fix IDE warns
+const {sin, cos, sqrt, PI} = Math;
+const rad = deg => deg * PI / 180;
+
+// -------------------------------------------------------------------------------------------------------- //
+
+// import Swiper from 'swiper' // fix Swiper IDE warns
 
 const pages = new Swiper('.main__container', {
     direction: 'vertical',
@@ -19,7 +24,9 @@ const pages = new Swiper('.main__container', {
 
 // -------------------------------------------------------------------------------------------------------- //
 
-function enablePagesChange() {
+let sliderChangeAllowed = false;
+
+function allowSliderChange() {
     pages.params.allowTouchMove = true;
 
     pages.params.mousewheel.enabled = true;
@@ -29,7 +36,8 @@ function enablePagesChange() {
     pages.keyboard.enable();
 
     pages.update();
-    pages.slideNext();
+
+    sliderChangeAllowed = true;
 }
 
 // -------------------------------------------------------------------------------------------------------- //
@@ -45,96 +53,142 @@ noUiSlider.create(timeBar, {
 
 // -------------------------------------------------------------------------------------------------------- //
 
-const genBtn = document.querySelector('.generate');
-genBtn.addEventListener('click', enablePagesChange, {once: true});
-genBtn.addEventListener('click', initInfoFields);
+const zip = (keys, vals) => keys.map((k, i) => [k, vals[i]]);
+const listToDict = (keys, vals) => Object.fromEntries(zip(keys, vals));
 
 // -------------------------------------------------------------------------------------------------------- //
 
-function validateTextField(event, nonNeg) {
+const getTIFValue = field => parseFloat(field.value);
+const getCIFValue = field => field.checked;
+
+const updateIFState = (field, invalid) => field.closest('.input__item').classList.toggle('failed', invalid);
+
+const getLFValue = field => parseFloat(field.textContent);
+const setLFValue = (field, val) => field.textContent = parseFloat(val).toFixed(MAX_DECIMAL_PLACES);
+
+// -------------------------------------------------------------------------------------------------------- //
+
+const TIKList = ['a', 'M', 'm', 'v0', 'g', 'h', 'V'];
+const CIK = 'aw';
+
+const IKList = [...TIKList, CIK];
+const LKList = ['X', 'Y', 'T', 't', 'v', 'vx', 'vy', 'L', 'H'];
+
+const TIFList = document.querySelectorAll('.text-field');
+const CIF = document.querySelector('.checkbox');
+
+const IFList = [...TIFList, CIF];
+const LFList = document.querySelectorAll('.log-field');
+
+const inp = listToDict(IKList, IFList);
+const log = listToDict(LKList, LFList);
+
+// -------------------------------------------------------------------------------------------------------- //
+
+const createValidateFunction = (val, cond) => new Function(val, `return ${cond}`);
+
+const TIFCList = Array.from(document.querySelectorAll('.constraint')).map(val => val.textContent);
+const TIFVList = TIKList.map((val, i) => createValidateFunction(val, TIFCList[i]));
+
+const TIFValidate = listToDict(TIKList, TIFVList);
+
+// -------------------------------------------------------------------------------------------------------- //
+
+function filterNumChars(event) {
     const tf = event.target;
 
     const value = tf.value;
     const last = tf.selectionStart - 1;
 
-    const pattern = nonNeg ? /^\d*[.,]?\d*$/ : /^-?\d*[.,]?\d*$/;
-
-    if (!pattern.test(value)) tf.value = value.slice(0, last) + value.slice(last + 1);
+    if (!/^-?\d*[.,]?\d*$/.test(value)) tf.value = value.slice(0, last) + value.slice(last + 1);
+    else updateIFState(tf, false);
 }
 
-const textInputList = document.querySelectorAll('.text-field');
-const checkboxInput = document.querySelector('.checkbox');
-
-textInputList.forEach(ti => {
-    ti.addEventListener('input', event => validateTextField(event, ti.classList.contains('non-neg')));
-    ti.addEventListener('paste', event => event.preventDefault());
+TIFList.forEach(tf => {
+    tf.addEventListener('input', filterNumChars);
+    tf.addEventListener('paste', event => event.preventDefault());
 });
 
 // -------------------------------------------------------------------------------------------------------- //
 
-zip = (keys, vals) => keys.map((k, i) => [k, vals[i]]);
-listToDict = (keys, vals) => Object.fromEntries(zip(keys, vals));
+function validateTIF() {
+    let res = true;
 
-getInputFieldValue = field => parseFloat(field.value);
+    for (const key of TIKList) {
+        const IF = inp[key];
+        const validate = TIFValidate[key];
 
-setInfoFieldValue = (field, val) => field.textContent = parseFloat(val).toFixed(MAX_DECIMAL_PLACES);
-getInfoFieldValue = field => parseFloat(field.textContent);
+        const isValid = validate(getTIFValue(IF));
 
-const inputFieldList = [...textInputList, checkboxInput];
-const infoFieldList = document.querySelectorAll('.info__value');
+        updateIFState(IF, !isValid);
 
-const inp = listToDict(['a', 'M', 'm', 'v0', 'g', 'h', 'V', 'aw'], inputFieldList);
-const inf = listToDict(['X', 'Y', 'T', 't', 'v', 'vx', 'vy', 'L', 'H'], infoFieldList);
+        res &&= isValid;
+    }
 
-// -------------------------------------------------------------------------------------------------------- //
-
-const {sin, cos, sqrt, PI} = Math;
-
-rad = deg => deg * PI / 180;
-
-// -------------------------------------------------------------------------------------------------------- //
-
-timeInfoFieldInit = () => timeBar.noUiSlider.updateOptions({range: {min: 0, max: getInfoFieldValue(inf.T)}});
-
-timeBar.noUiSlider.on('update', vals => regularInfoFieldsCalc(vals[0]));
-
-// -------------------------------------------------------------------------------------------------------- //
-
-function singleInfoFieldsCalc() {
-    const a = rad(getInputFieldValue(inp.a));
-    const v0 = getInputFieldValue(inp.v0);
-    const g = getInputFieldValue(inp.g);
-
-    setInfoFieldValue(inf.vx, v0 * cos(a));
-
-    setInfoFieldValue(inf.T, 2 * v0 * sin(a) / g);
-
-    setInfoFieldValue(inf.L, v0 ** 2 * sin(2 * a) / g);
-    setInfoFieldValue(inf.H, (v0 * sin(a)) ** 2 / (2 * g));
+    return res;
 }
 
-function regularInfoFieldsCalc(t) {
-    const a = rad(getInputFieldValue(inp.a));
-    const v0 = getInputFieldValue(inp.v0);
-    const h = getInputFieldValue(inp.h);
-    const g = getInputFieldValue(inp.g);
+// -------------------------------------------------------------------------------------------------------- //
 
-    const vx = getInfoFieldValue(inf.vx);
+function singleLFCalc() {
+    const a = rad(getTIFValue(inp.a));
+    const v0 = getTIFValue(inp.v0);
+    const g = getTIFValue(inp.g);
+
+    setLFValue(log.vx, v0 * cos(a));
+
+    setLFValue(log.T, 2 * v0 * sin(a) / g);
+    timeLFInit();
+
+    setLFValue(log.L, v0 ** 2 * sin(2 * a) / g);
+    setLFValue(log.H, (v0 * sin(a)) ** 2 / (2 * g));
+}
+
+function regularLFCalc(t = 0) {
+    const a = rad(getTIFValue(inp.a));
+    const v0 = getTIFValue(inp.v0);
+    const h = getTIFValue(inp.h);
+    const g = getTIFValue(inp.g);
+
+    const vx = getLFValue(log.vx);
     const vy = v0 * sin(a) - g * t;
 
-    setInfoFieldValue(inf.t, t);
+    setLFValue(log.t, t);
 
-    setInfoFieldValue(inf.vy, vy);
-    setInfoFieldValue(inf.v, sqrt(vx ** 2 + vy ** 2));
+    setLFValue(log.vy, vy);
+    setLFValue(log.v, sqrt(vx ** 2 + vy ** 2));
 
-    setInfoFieldValue(inf.X, vx * t);
-    setInfoFieldValue(inf.Y, h + v0 * sin(a) * t - g * t ** 2 / 2);
+    setLFValue(log.X, vx * t);
+    setLFValue(log.Y, h + v0 * sin(a) * t - g * t ** 2 / 2);
 }
 
-function initInfoFields() {
-    singleInfoFieldsCalc();
-    timeInfoFieldInit();
-    regularInfoFieldsCalc(0);
+// -------------------------------------------------------------------------------------------------------- //
+
+const timeLFInit = () => timeBar.noUiSlider.updateOptions({start: [0], range: {min: 0, max: getLFValue(log.T)}});
+
+const timeBarUpdate = (vals, handle) => regularLFCalc(vals[handle]);
+
+const allowTimeBarUpdate = () => timeBar.noUiSlider.on('update', timeBarUpdate);
+const refuseTimeBarUpdate = () => timeBar.noUiSlider.off('update', timeBarUpdate);
+
+// -------------------------------------------------------------------------------------------------------- //
+
+function generate() {
+    if (!validateTIF()) return;
+
+    if (!sliderChangeAllowed) allowSliderChange();
+
+    refuseTimeBarUpdate();
+
+    singleLFCalc();
+    regularLFCalc();
+
+    allowTimeBarUpdate();
+
+    pages.slideNext();
 }
+
+const genBtn = document.querySelector('.generate');
+genBtn.addEventListener('click', generate);
 
 // -------------------------------------------------------------------------------------------------------- //

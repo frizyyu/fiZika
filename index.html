@@ -44,7 +44,7 @@
                                         </li>
                                         <li class="input__item">
                                             <label for="g" class="input__text">g&thinsp;(м/с<sup>2</sup>)&thinsp;:</label>
-                                            <input type="text" id="g" placeholder="Ускорение свободного падение"
+                                            <input type="text" id="g" placeholder="Ускорение свободного падения"
                                                    autocomplete="off" class="input__field text-field text">
                                         </li>
                                         <li class="input__item">
@@ -72,20 +72,32 @@
                                         <li class="constraints__item">
                                             <p class="constraints__text">0 ≤ α ≤ 90</p>
                                         </li>
+                                        <li class="constraints__item disabled">
+                                            <p class="constraints__text constraint">0 <= a && a <= 90</p>
+                                        </li>
                                         <li class="constraints__item">
                                             <p class="constraints__text">0 < m < M</p>
                                         </li>
-                                        <li class="constraints__item">
-                                            <p class="constraints__text">v<sub>0</sub> > 0</p>
+                                        <li class="constraints__item disabled">
+                                            <p class="constraints__text constraint">0 < M</p>
+                                        </li>
+                                        <li class="constraints__item disabled">
+                                            <p class="constraints__text constraint">0 < m</p>
                                         </li>
                                         <li class="constraints__item">
-                                            <p class="constraints__text">g > 0</p>
+                                            <p class="constraints__text">0 < v<sub>0</sub></p>
+                                        </li>
+                                        <li class="constraints__item disabled">
+                                            <p class="constraints__text constraint">0 < v0</p>
                                         </li>
                                         <li class="constraints__item">
-                                            <p class="constraints__text">h > 0</p>
+                                            <p class="constraints__text constraint">0 < g</p>
                                         </li>
                                         <li class="constraints__item">
-                                            <p class="constraints__text">V > 0</p>
+                                            <p class="constraints__text constraint">0 < h</p>
+                                        </li>
+                                        <li class="constraints__item">
+                                            <p class="constraints__text constraint">0 < V</p>
                                         </li>
                                     </ul>
                                 </div>
@@ -100,58 +112,58 @@
                     <div class="snd-page__inner">
                         <div class="snd-page__left">
                             <canvas class="snd-page__display display block"></canvas>
-                            <div class="info__time-slider time-slider slider-container"></div>
+                            <div class="log__time-slider time-slider slider-container"></div>
                         </div>
                         <div class="snd-page__right">
-                            <div class="snd-page__info info block">
-                                <ul class="info__list">
-                                    <li class="info__item">
-                                        <p class="info__option">X&thinsp;(м)&thinsp;:</p>
-                                        <p class="info__value"></p>
+                            <div class="snd-page__log log block">
+                                <ul class="log__list">
+                                    <li class="log__item">
+                                        <p class="log__option">X&thinsp;(м)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
                                     </li>
-                                    <li class="info__item">
-                                        <p class="info__option">Y&thinsp;(м)&thinsp;:</p>
-                                        <p class="info__value"></p>
+                                    <li class="log__item">
+                                        <p class="log__option">Y&thinsp;(м)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
                                     </li>
-                                    <li class="info__item">
-                                        <p class="info__option">T&thinsp;(с)&thinsp;:</p>
-                                        <p class="info__value"></p>
+                                    <li class="log__item">
+                                        <p class="log__option">T&thinsp;(с)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
                                     </li>
-                                    <li class="info__item">
-                                        <p class="info__option">t&thinsp;(с)&thinsp;:</p>
-                                        <p class="info__value"></p>
+                                    <li class="log__item">
+                                        <p class="log__option">t&thinsp;(с)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
                                     </li>
-                                    <li class="info__item">
-                                        <p class="info__option">v&thinsp;(м/с)&thinsp;:</p>
-                                        <p class="info__value"></p>
+                                    <li class="log__item">
+                                        <p class="log__option">v&thinsp;(м/с)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
                                     </li>
-                                    <li class="info__item">
-                                        <p class="info__option">v<sub>x</sub>&thinsp;(м/с)&thinsp;:</p>
-                                        <p class="info__value"></p>
+                                    <li class="log__item">
+                                        <p class="log__option">v<sub>x</sub>&thinsp;(м/с)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
                                     </li>
-                                    <li class="info__item">
-                                        <p class="info__option">v<sub>y</sub>&thinsp;(м/с)&thinsp;:</p>
-                                        <p class="info__value"></p>
+                                    <li class="log__item">
+                                        <p class="log__option">v<sub>y</sub>&thinsp;(м/с)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
                                     </li>
-                                    <li class="info__item">
-                                        <p class="info__option">u&thinsp;(м/с)&thinsp;:</p>
-                                        <p class="info__value"></p>
+                                    <li class="log__item">
+                                        <p class="log__option">u&thinsp;(м/с)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
                                     </li>
-                                    <li class="info__item">
-                                        <p class="info__option">L&thinsp;(м)&thinsp;:</p>
-                                        <p class="info__value"></p>
+                                    <li class="log__item">
+                                        <p class="log__option">L&thinsp;(м)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
                                     </li>
-                                    <li class="info__item">
-                                        <p class="info__option">H&thinsp;(м)&thinsp;:</p>
-                                        <p class="info__value"></p>
+                                    <li class="log__item">
+                                        <p class="log__option">H&thinsp;(м)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
                                     </li>
-                                    <li class="info__item">
-                                        <p class="info__option">k:</p>
-                                        <p class="info__value"></p>
+                                    <li class="log__item">
+                                        <p class="log__option">k:</p>
+                                        <p class="log__value log-field"></p>
                                     </li>
                                 </ul>
                             </div>
-                            <button class="snd-page__simulate block text">Симулировать</button>
+                            <button class="snd-page__simulate simulate block text">Симулировать</button>
                         </div>
                     </div>
                 </div>
