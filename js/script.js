@@ -133,6 +133,8 @@ function validateTIF() {
 function singleLFCalc() {
     const a = rad(getTIFValue(inp.a));
     const v0 = getTIFValue(inp.v0)
+    const m = getTIFValue(inp.m);
+    const M = getTIFValue(inp.M);
     const h = getTIFValue(inp.h);
     const g = getTIFValue(inp.g);
 
@@ -142,6 +144,7 @@ function singleLFCalc() {
     const T = (vy + sqrt(vy ** 2 + 2 * g * h)) / g;
 
     setLFValue(log.vx, vx);
+    setLFValue(log.u, getCIFValue(inp.aw) ? m * vx / M : 0);
 
     setLFValue(log.T, T);
     timeLFInit();
