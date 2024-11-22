@@ -2,7 +2,7 @@ const MAX_DECIMAL_PLACES = 2;
 
 // -------------------------------------------------------------------------------------------------------- //
 
-const {sin, cos, sqrt, PI} = Math;
+const {sin, cos, tan, sqrt, PI} = Math;
 const rad = deg => deg * PI / 180;
 
 // -------------------------------------------------------------------------------------------------------- //
@@ -72,7 +72,7 @@ const TIKList = ['a', 'M', 'm', 'v0', 'g', 'h', 'V'];
 const CIK = 'aw';
 
 const IKList = [...TIKList, CIK];
-const LKList = ['X', 'Y', 'T', 't', 'v', 'vx', 'vy', 'L', 'H'];
+const LKList = ['X', 'Y', 'T', 't', 'v', 'vx', 'vy', 'u', 'L', 'H', 'k'];
 
 const TIFList = document.querySelectorAll('.text-field');
 const CIF = document.querySelector('.checkbox');
@@ -132,16 +132,22 @@ function validateTIF() {
 
 function singleLFCalc() {
     const a = rad(getTIFValue(inp.a));
-    const v0 = getTIFValue(inp.v0);
+    const v0 = getTIFValue(inp.v0)
+    const h = getTIFValue(inp.h);
     const g = getTIFValue(inp.g);
 
-    setLFValue(log.vx, v0 * cos(a));
+    const vx = v0 * cos(a);
+    const vy = v0 * sin(a);
 
-    setLFValue(log.T, 2 * v0 * sin(a) / g);
+    const T = (vy + sqrt(vy ** 2 + 2 * g * h)) / g;
+
+    setLFValue(log.vx, vx);
+
+    setLFValue(log.T, T);
     timeLFInit();
 
-    setLFValue(log.L, v0 ** 2 * sin(2 * a) / g);
-    setLFValue(log.H, (v0 * sin(a)) ** 2 / (2 * g));
+    setLFValue(log.L, vx * T);
+    setLFValue(log.H, h + vy ** 2 / (2 * g));
 }
 
 function regularLFCalc(t = 0) {
@@ -153,13 +159,17 @@ function regularLFCalc(t = 0) {
     const vx = getLFValue(log.vx);
     const vy = v0 * sin(a) - g * t;
 
+    const x = vx * t;
+
     setLFValue(log.t, t);
 
     setLFValue(log.vy, vy);
     setLFValue(log.v, sqrt(vx ** 2 + vy ** 2));
 
-    setLFValue(log.X, vx * t);
+    setLFValue(log.X, x);
     setLFValue(log.Y, h + v0 * sin(a) * t - g * t ** 2 / 2);
+
+    setLFValue(log.k, g / vx ** 2 / (1 + (tan(a) - g * x / vx ** 2) ** 2) ** 1.5);
 }
 
 // -------------------------------------------------------------------------------------------------------- //
