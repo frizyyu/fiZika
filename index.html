@@ -3,112 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Пушка и снаряд</title>
-    <link rel="stylesheet" href="main.css">
+    <title>VaZilyeV & AleXXXeev</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.8.1/nouislider.min.css">
+    <link rel="stylesheet" href="style/reset.css">
+    <link rel="stylesheet" href="style/common.css">
+    <link rel="stylesheet" href="style/main.css">
 </head>
 <body>
-<header class="header">
-    <div class="container">
-        <h1 class="header__heading">Моделирование движения пушки и снаряда</h1>
-    </div>
-</header>
-<main class="main">
-    <div class="container">
-        <div class="main__inner">
-            <div class="main__above">
-                <div class="main__input">
-                    <div>
-                        <label for="angle">Угол α (градусы):</label>
-                        <input type="number" id="angle" value="45">
+<main class="main text">
+    <div class="main__container swiper-container">
+        <div class="main__pages pages swiper-wrapper">
+            <div class="fst-page page swiper-slide">
+                <div class="container">
+                    <div class="fst-page__inner">
+                        <h1 class="fst-page__heading heading">Моделирование движения пушки и снаряда</h1>
+                        <div class="fst-page__body">
+                            <div class="fst-page__interaction">
+                                <div class="fst-page__input input block">
+                                    <ul class="input__list">
+                                        <li class="input__item">
+                                            <label for="alpha" class="input__text">α&thinsp;(&#xb0;)&thinsp;:</label>
+                                            <input type="text" id="alpha" placeholder="Угол"
+                                                   autocomplete="off" class="input__field text-field text">
+                                        </li>
+                                        <li class="input__item">
+                                            <label for="m-gun" class="input__text">M&thinsp;(кг)&thinsp;:</label>
+                                            <input type="text" id="m-gun" placeholder="Масса пушки" autocomplete="off"
+                                                   class="input__field text-field text">
+                                        </li>
+                                        <li class="input__item">
+                                            <label for="m-kernel" class="input__text">m&thinsp;(кг)&thinsp;:</label>
+                                            <input type="text" id="m-kernel" placeholder="Масса снаряда"
+                                                   autocomplete="off" class="input__field text-field text">
+                                        </li>
+                                        <li class="input__item">
+                                            <label for="v0" class="input__text">v<sub>0</sub>&thinsp;(м/с)&thinsp;:</label>
+                                            <input type="text" id="v0" placeholder="Начальная скорость снаряда"
+                                                   autocomplete="off" class="input__field text-field text">
+                                        </li>
+                                        <li class="input__item">
+                                            <label for="g" class="input__text">g&thinsp;(м/с<sup>2</sup>)&thinsp;:</label>
+                                            <input type="text" id="g" placeholder="Ускорение свободного падения"
+                                                   autocomplete="off" class="input__field text-field text">
+                                        </li>
+                                        <li class="input__item">
+                                            <label for="h" class="input__text">h&thinsp;(м)&thinsp;:</label>
+                                            <input type="text" id="h" placeholder="Высота пушки" autocomplete="off"
+                                                   class="input__field text-field text">
+                                        </li>
+                                        <li class="input__item">
+                                            <label for="V" class="input__text">V&thinsp;(м/с<sup>3</sup>)&thinsp;:</label>
+                                            <input type="text" id="V" placeholder="Объем снаряда" autocomplete="off"
+                                                   class="input__field text-field text">
+                                        </li>
+                                        <li class="input__item">
+                                            <label>
+                                                <span class="input__text">Разблокировать колеса&thinsp;:</span>
+                                                <input type="checkbox" id="wheels" autocomplete="off"
+                                                       class="input__field checkbox">
+                                                <span class="checkbox-style"></span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="fst-page__constraints constraints block">
+                                    <ul class="constraints__list">
+                                        <li class="constraints__item">
+                                            <p class="constraints__text">0 ≤ α ≤ 90</p>
+                                        </li>
+                                        <li class="constraints__item disabled">
+                                            <p class="constraints__text constraint">0 <= a && a <= 90</p>
+                                        </li>
+                                        <li class="constraints__item">
+                                            <p class="constraints__text">0 < m < M</p>
+                                        </li>
+                                        <li class="constraints__item disabled">
+                                            <p class="constraints__text constraint">0 < M</p>
+                                        </li>
+                                        <li class="constraints__item disabled">
+                                            <p class="constraints__text constraint">0 < m</p>
+                                        </li>
+                                        <li class="constraints__item">
+                                            <p class="constraints__text">0 < v<sub>0</sub></p>
+                                        </li>
+                                        <li class="constraints__item disabled">
+                                            <p class="constraints__text constraint">0 < v0</p>
+                                        </li>
+                                        <li class="constraints__item">
+                                            <p class="constraints__text constraint">0 < g</p>
+                                        </li>
+                                        <li class="constraints__item">
+                                            <p class="constraints__text constraint">0 < h</p>
+                                        </li>
+                                        <li class="constraints__item">
+                                            <p class="constraints__text constraint">0 < V</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <button class="fst-page__generate generate block text">Генерировать</button>
+                        </div>
                     </div>
-                    <div>
-                        <label for="mass-cart">Масса пушки (M):</label>
-                        <input type="number" id="mass-cart" value="1000">
-                    </div>
-                    <div>
-                        <label for="mass-kernel">Масса снаряда (m):</label>
-                        <input type="number" id="mass-kernel" value="10">
-                    </div>
-                    <div>
-                        <label for="start-speed">Начальная скорость (v<sub>0</sub>):</label>
-                        <input type="number" id="start-speed" value="100">
-                    </div>
-                    <div>
-                        <label for="gravity">Ускорение свободного падения (g):</label>
-                        <input type="number" id="gravity" value="9.81">
-                    </div>
-                    <div>
-                        <label for="size-cart">Высота пушки (h):</label>
-                        <input type="number" id="size-cart" value="9.81">
-                    </div>
-                    <div>
-                        <label for="size-kernel">Объём снаряда (V):</label>
-                        <input type="number" id="size-kernel" value="9.81">
-                    </div>
-                    <div>
-                        <label for="is-lock">Разблокировать колёса</label>
-                        <input type="checkbox" id="is-lock">
-                    </div>
-                </div>
-                <div class="main__exec">
-                    <div class="exec-item">
-                        <label>Координаты: </label>
-                        <br>
-                        <label class="tab">X: </label><label class="x-coord" id="x-coord">тут будет цифра из js</label>
-                        <br>
-                        <label class="tab">Y: </label><label class="y-coord" id="y-coord">тут будет цифра из js</label>
-                    </div>
-                    <div class="exec-item">
-                        <label>Скорость (v): </label><label class="speed" id="speed">тут будет цифра из js</label>
-                    </div>
-                    <div class="exec-item">
-                        <label>Время (t): </label><label class="time" id="time">тут будет цифра из js</label>
-                    </div>
-                    <div class="exec-item">
-                        <label>Дальность (L): </label><label class="range" id="range">тут будет цифра из js</label>
-                    </div>
-                    <div class="exec-item">
-                        <label>Максимальная высота подъёма (H): </label><label class="max-height" id="max-height">тут будет цифра из js</label>
-                    </div>
-                </div>
-                <div class="main__reqs">
-                    <table>
-                        <tr>
-                            <th>α</th>
-                            <th>M</th>
-                            <th>m</th>
-                            <th>v<sub>0</sub></th>
-                            <th>g</th>
-                            <th>h</th>
-                            <th>V</th>
-                        </tr>
-                        <tr>
-                            <td>а</td>
-                            <td>a</td>
-                            <td>а</td>
-                            <td>а</td>
-                            <td>а</td>
-                            <td>а</td>
-                            <td>а</td>
-                        </tr>
-                    </table>
                 </div>
             </div>
-            <canvas id="display" class="main__display"></canvas>
-            <div class="main__below">
-                <label>
-                    <input type="range" class="main__time-slider time-slider">
-                </label>
-                <button class="main__start">зуб :(</button>
+            <div class="snd-page page swiper-slide">
+                <div class="container">
+                    <div class="snd-page__inner">
+                        <div class="snd-page__left">
+                            <canvas class="snd-page__display display block"></canvas>
+                            <div class="log__time-slider time-slider slider-container"></div>
+                        </div>
+                        <div class="snd-page__right">
+                            <div class="snd-page__log log block">
+                                <ul class="log__list">
+                                    <li class="log__item">
+                                        <p class="log__option">X&thinsp;(м)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
+                                    </li>
+                                    <li class="log__item">
+                                        <p class="log__option">Y&thinsp;(м)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
+                                    </li>
+                                    <li class="log__item">
+                                        <p class="log__option">T&thinsp;(с)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
+                                    </li>
+                                    <li class="log__item">
+                                        <p class="log__option">t&thinsp;(с)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
+                                    </li>
+                                    <li class="log__item">
+                                        <p class="log__option">v&thinsp;(м/с)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
+                                    </li>
+                                    <li class="log__item">
+                                        <p class="log__option">v<sub>x</sub>&thinsp;(м/с)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
+                                    </li>
+                                    <li class="log__item">
+                                        <p class="log__option">v<sub>y</sub>&thinsp;(м/с)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
+                                    </li>
+                                    <li class="log__item">
+                                        <p class="log__option">u&thinsp;(м/с)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
+                                    </li>
+                                    <li class="log__item">
+                                        <p class="log__option">L&thinsp;(м)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
+                                    </li>
+                                    <li class="log__item">
+                                        <p class="log__option">H&thinsp;(м)&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
+                                    </li>
+                                    <li class="log__item">
+                                        <p class="log__option">κ&thinsp;:</p>
+                                        <p class="log__value log-field"></p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button class="snd-page__simulate simulate block text">Симулировать</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</main>
-<footer class="footer">
-    <div class="container">
-        <h1 class="footer__pedik">Алексеев Андрей P3219; Васильев Артём P3219</h1>
+    <div class="main__error error blackout disabled">
+        <div class="error__body block">
+            <div class="error__close block"></div>
+            <h1 class="error__heading heading">Ошибка!</h1>
+            <p class="error__message">Ну что это такое. тебе делать нечего. что ли иди и читай книжку.собирай кубик рубика</p>
+        </div>
     </div>
-</footer>
-<script src="script.js"></script>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.8.1/nouislider.min.js"></script>
+<script src="js/script.js"></script>
 </body>
 </html>

@@ -1,0 +1,277 @@
+.main {
+    position: relative;
+    text-align: center;
+    background-image: url(../img/bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.main, .main__container, .main__pages {
+    width: 100%;
+    height: 100%;
+}
+
+.page * {
+    font-weight: 700;
+}
+
+.fst-page__inner, .fst-page__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+}
+
+.fst-page__heading {
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+.fst-page__interaction {
+    display: flex;
+    gap: 30px;
+}
+
+.input__list {
+    width: 600px;
+    margin: 0 90px;
+}
+
+.input__item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 32px 0;
+}
+
+.input__item:last-child {
+    position: relative;
+}
+
+.input__text {
+    white-space: nowrap;
+}
+
+.text-field {
+    width: 100%;
+    height: 50px;
+    padding-left: 20px;
+    border: 1px solid #FFFFFF;
+    border-radius: 16px;
+    background-color: transparent;
+    font-weight: 400;
+}
+
+.text-field::placeholder {
+    font-family: 'Raleway', sans-serif;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1;
+    color: #FFFFFF;
+    opacity: 0.75;
+}
+
+.text-field:focus {
+    outline: none;
+}
+
+.checkbox {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+.checkbox-style {
+    position: absolute;
+    right: 0;
+    top: -50%;
+    width: 50px;
+    height: 50px;
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 16px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.checkbox:checked + .checkbox-style {
+    border: 1px solid #4FFF38;
+ }
+
+.checkbox:checked + .checkbox-style:before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 3px;
+    width: 16px;
+    height: 32px;
+    border: solid #4FFF38;
+    border-width: 0 1px 1px 0;
+    transform: rotate(45deg);
+}
+
+.constraints {
+    height: fit-content;
+}
+
+.constraints__list {
+    margin: 0 50px;
+}
+
+.constraints__item {
+    margin: 40px 0;
+}
+
+.fst-page__generate {
+    padding: 35px 142px;
+    margin: 0 auto;
+    font-size: 32px;
+    cursor: pointer;
+}
+
+.snd-page__inner {
+    width: 100%;
+    height: calc(100% - 100px);
+    display: flex;
+    gap: 30px;
+}
+
+.snd-page__left, .snd-page__right {
+    display: flex;
+    flex-direction: column;
+}
+
+.snd-page__left {
+    gap: 40px;
+}
+
+.snd-page__right {
+    justify-content: space-between;
+}
+
+.time-slider, .time-slider .noUi-handle {
+    border: none;
+    box-shadow: none;
+}
+
+.time-slider {
+    position: relative;
+    height: 12px;
+    pointer-events: auto;
+}
+
+.time-slider, .time-slider * {
+    cursor: pointer;
+}
+
+.time-slider .noUi-connect {
+    background-color: #4FFF38;
+}
+
+.time-slider .noUi-handle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #4FFF38;
+}
+
+.time-slider .noUi-handle:before,
+.time-slider .noUi-handle:after {
+    display: none;
+}
+
+.display {
+    width: 100%;
+    height: 100%;
+}
+
+.log {
+    margin-bottom: auto;
+}
+
+.log__list {
+    width: 300px;
+    margin: 0 35px; /* normal - 0 40px*/
+}
+
+.log__item {
+    display: flex;
+    justify-content: space-between;
+    margin: 35px 0; /* normal - 0 40px*/
+}
+
+.log__option {
+    white-space: nowrap;
+}
+
+.log__value {
+    font-weight: 400;
+}
+
+.snd-page__simulate {
+    padding: 35px;
+    cursor: pointer;
+}
+
+/* ----------------- ERROR ----------------- */
+
+.input__item.failed * {
+    color: #FF7878;
+}
+
+.input__item.failed input::placeholder {
+    color: #FF7878;
+}
+
+.input__item.failed .text-field {
+    border: 3px solid #FF7878;
+    background-color: rgba(255, 120, 120, 0.1);
+}
+
+.blackout {
+    transition: background-color linear .25s;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.error {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.error__body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 80px 80px 80px;
+    background-image: url(../img/err-bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.error__close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-image: url(../img/err-close.svg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.error__message {
+    width: 600px;
+    font-size: 32px;
+    text-align: left;
+}

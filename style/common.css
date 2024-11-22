@@ -1,0 +1,79 @@
+@font-face {
+    font-family: 'Raleway';
+    src: url('../fonts/Raleway-Regular.ttf') format('truetype'),
+         url('../fonts/Raleway-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SONGER Grotesque';
+    src: url('../fonts/SONGER™_G_Regular.otf') format('opentype');
+    font-style: normal;
+    font-weight: normal;
+}
+
+*, *:after, *:before {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+    max-width: 1610px;
+    padding: 15px;
+}
+
+.page {
+    display: flex;
+    justify-content: center;
+}
+
+.block {
+    border: 2px solid #FFFFFF;
+    border-radius: 30px;
+    backdrop-filter: blur(128px);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.heading {
+    font-family: 'SONGER Grotesque', sans-serif;
+    font-size: 90px;
+    font-weight: 400;
+    line-height: 1.3;
+}
+
+.text {
+    font-family: 'Raleway', sans-serif;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.05em;
+}
+
+.heading, .text {
+    color: #FFFFFF;
+}
+
+sub, sup {
+    position: relative;
+    bottom: -0.25em;
+    font-size: 75%;
+    line-height: 0;
+    vertical-align: baseline;
+}
+
+sup {
+    bottom: 0.5em;
+}
+
+.disabled {
+    display: none !important;
+}
