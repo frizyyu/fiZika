@@ -38,8 +38,16 @@
     gap: 30px;
 }
 
+.input {
+    width: 780px;
+    height: 666px;
+}
+
 .input__list {
-    width: 600px;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     margin: 0 90px;
 }
 
@@ -47,7 +55,6 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    margin: 32px 0;
 }
 
 .input__item:last-child {
@@ -118,15 +125,15 @@
 }
 
 .constraints {
-    height: fit-content;
+    height: 450px;
 }
 
 .constraints__list {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     margin: 0 50px;
-}
-
-.constraints__item {
-    margin: 40px 0;
 }
 
 .fst-page__generate {
@@ -138,7 +145,7 @@
 
 .snd-page__inner {
     width: 100%;
-    height: calc(100% - 100px);
+    height: min(875px, calc(100% - 100px));
     display: flex;
     gap: 30px;
 }
@@ -146,14 +153,7 @@
 .snd-page__left, .snd-page__right {
     display: flex;
     flex-direction: column;
-}
-
-.snd-page__left {
     gap: 40px;
-}
-
-.snd-page__right {
-    justify-content: space-between;
 }
 
 .time-slider, .time-slider .noUi-handle {
@@ -193,18 +193,21 @@
 }
 
 .log {
-    margin-bottom: auto;
+    height: 100%;
 }
 
 .log__list {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     width: 300px;
-    margin: 0 35px; /* normal - 0 40px*/
+    margin: 0 40px;
 }
 
 .log__item {
     display: flex;
     justify-content: space-between;
-    margin: 35px 0; /* normal - 0 40px*/
 }
 
 .log__option {
