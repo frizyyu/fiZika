@@ -53,7 +53,7 @@
                                                    class="input__field text-field text">
                                         </li>
                                         <li class="input__item">
-                                            <label for="V" class="input__text">V&thinsp;(м/с<sup>3</sup>)&thinsp;:</label>
+                                            <label for="V" class="input__text">V&thinsp;(м<sup>3</sup>)&thinsp;:</label>
                                             <input type="text" id="V" placeholder="Объем снаряда" autocomplete="off"
                                                    class="input__field text-field text">
                                         </li>
@@ -111,7 +111,7 @@
                 <div class="container">
                     <div class="snd-page__inner">
                         <div class="snd-page__left">
-                            <canvas class="snd-page__display display block"></canvas>
+                            <canvas class="snd-page__display display block" width="800" height="650"></canvas>
                             <div class="log__time-slider time-slider"></div>
                         </div>
                         <div class="snd-page__right">
@@ -119,47 +119,47 @@
                                 <ul class="log__list">
                                     <li class="log__item">
                                         <p class="log__option">X&thinsp;(м)&thinsp;:</p>
-                                        <p class="log__value log-field"></p>
+                                        <p class="log__value log-field" id="x-value"></p>
                                     </li>
                                     <li class="log__item">
                                         <p class="log__option">Y&thinsp;(м)&thinsp;:</p>
-                                        <p class="log__value log-field"></p>
+                                        <p class="log__value log-field" id="y-value"></p>
                                     </li>
                                     <li class="log__item">
                                         <p class="log__option">T&thinsp;(с)&thinsp;:</p>
-                                        <p class="log__value log-field"></p>
+                                        <p class="log__value log-field" id="tt-value"></p>
                                     </li>
                                     <li class="log__item">
                                         <p class="log__option">t&thinsp;(с)&thinsp;:</p>
-                                        <p class="log__value log-field"></p>
+                                        <p class="log__value log-field" id="t-value"></p>
                                     </li>
                                     <li class="log__item">
                                         <p class="log__option">v&thinsp;(м/с)&thinsp;:</p>
-                                        <p class="log__value log-field"></p>
+                                        <p class="log__value log-field" id="v-value"></p>
                                     </li>
                                     <li class="log__item">
                                         <p class="log__option">v<sub>x</sub>&thinsp;(м/с)&thinsp;:</p>
-                                        <p class="log__value log-field"></p>
+                                        <p class="log__value log-field" id="vx-value"></p>
                                     </li>
                                     <li class="log__item">
                                         <p class="log__option">v<sub>y</sub>&thinsp;(м/с)&thinsp;:</p>
-                                        <p class="log__value log-field"></p>
+                                        <p class="log__value log-field" id="vy-value"></p>
                                     </li>
                                     <li class="log__item">
                                         <p class="log__option">u&thinsp;(м/с)&thinsp;:</p>
-                                        <p class="log__value log-field"></p>
+                                        <p class="log__value log-field" id="u-value"></p>
                                     </li>
                                     <li class="log__item">
                                         <p class="log__option">L&thinsp;(м)&thinsp;:</p>
-                                        <p class="log__value log-field"></p>
+                                        <p class="log__value log-field" id="L-value"></p>
                                     </li>
                                     <li class="log__item">
                                         <p class="log__option">H&thinsp;(м)&thinsp;:</p>
-                                        <p class="log__value log-field"></p>
+                                        <p class="log__value log-field" id="H-value"></p>
                                     </li>
                                     <li class="log__item">
                                         <p class="log__option">κ&thinsp;:</p>
-                                        <p class="log__value log-field"></p>
+                                        <p class="log__value log-field" id="k-value"></p>
                                     </li>
                                 </ul>
                             </div>
@@ -179,7 +179,10 @@
     </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+<script src="js/decomp.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.8.1/nouislider.min.js"></script>
 <script src="js/script.js"></script>
+<script src="js/physics.js"></script>
 </body>
 </html>
