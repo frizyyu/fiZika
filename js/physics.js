@@ -6,7 +6,6 @@ const Render = Matter.Render;
 let canSimulate = false;
 const Events = Matter.Events;
 const Vector = Matter.Vector;
-// const k = 3;  // Коэффициент сопротивления воздуха
 let kernel;
 let cannon;
 let sliderInterval;
@@ -64,8 +63,6 @@ document.querySelector('.simulate').addEventListener('click', function(event) {
 
         const initialVelocity = parseFloat(document.getElementById("v0").value);
 
-        //при разных массах и всём одинаковом остальном - первое касание будет одинаковым?
-
         const angleInRadians = a * (Math.PI / 180);
         const vx = initialVelocity * Math.cos(angleInRadians);
         const vy = -initialVelocity * Math.sin(angleInRadians);
@@ -106,7 +103,7 @@ document.querySelector('.fst-page__generate').addEventListener('click', function
     g = parseFloat(document.getElementById("g").value);
     h = parseFloat(document.getElementById("h").value);
     V = parseFloat(document.getElementById("V").value);
-    wheelsUnlocked = document.getElementById("wheels").state; //по идее юзлес
+    wheelsUnlocked = document.getElementById("wheels").state;
     clearInterval(sliderInterval);
     slider.noUiSlider.set(slider.noUiSlider.options.range.min);
 
@@ -122,7 +119,6 @@ document.querySelector('.fst-page__generate').addEventListener('click', function
             console.log("A");
         } else if (L < 2000) {
             width = firstWidth - (firstWidth - parseFloat(document.getElementById("L-value").textContent)) + firstWidth / 7 + 30;
-            //width = firstWidth - (firstWidth - parseFloat(document.getElementById("L-value").textContent)) + firstWidth / 7 + 53;
             console.log("B");
         } else {
             width = firstWidth;
