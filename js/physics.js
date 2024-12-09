@@ -75,33 +75,17 @@ document.querySelector('.time-slider').noUiSlider.on('set', function() {
 
 document.querySelector('.simulate').addEventListener('click', function(event) {
     event.preventDefault();
+
     if (canSimulate) {
         canSimulate = false;
 
-        const volume = parseFloat(document.getElementById("r").value);
-        radius = calculateRadius(volume);             //+23
-        showRadius = calculateRadius(volume*300);
-        kernel = Matter.Bodies.circle(canvas.width / 7, canvas.height - h - showRadius - 5, showRadius, {
-            restitution: 0,
-            render: { fillStyle: 'white' },
-            isStatic: true
-        });
 
-
-        const initialVelocity = parseFloat(document.getElementById("v0").value);
-
-        const angleInRadians = a * (Math.PI / 180);
-        const vx = initialVelocity * Math.cos(angleInRadians);
-        const vy = -initialVelocity * Math.sin(angleInRadians);
-
-        Matter.Body.setVelocity(kernel, { x: vx, y: vy });
-        Matter.Body.setMass(kernel, m);
-        Matter.World.add(world, kernel);
 
         var trail = [];
 
         Events.on(render, 'afterRender', function() {
             pathDrawing(kernel, trail);
+            drawVectors();
         });
 
         Matter.Runner.run(engine);
@@ -199,8 +183,30 @@ document.querySelector('.fst-page__generate').addEventListener('click', function
 
     Events.on(render, 'afterRender', function() {
         pathDrawing(cannon, trailCannon);
+        drawVectors();
     });
     Matter.World.add(world, cannon);
+
+    const volume = parseFloat(document.getElementById("r").value);
+    radius = calculateRadius(volume);             //+23
+    showRadius = calculateRadius(volume*300);
+    kernel = Matter.Bodies.circle(canvas.width / 7, canvas.height - h - showRadius - 5, showRadius, {
+        restitution: 0,
+        render: { fillStyle: 'white' },
+        isStatic: true
+    });
+
+
+    const initialVelocity = parseFloat(document.getElementById("v0").value);
+
+    const angleInRadians = a * (Math.PI / 180);
+    const vx = initialVelocity * Math.cos(angleInRadians);
+    const vy = -initialVelocity * Math.sin(angleInRadians);
+
+    Matter.Body.setVelocity(kernel, { x: vx, y: vy });
+    Matter.Body.setMass(kernel, m);
+    Matter.World.add(world, kernel);
+
     Matter.Render.run(render);
 });
 
@@ -210,8 +216,7 @@ function calculateRadius(volume) {
     return radius;
 }
 
-function pathDrawing(item, trail){
-
+function pathDrawing(item, trail) {
     trail.unshift({
         position: Vector.clone(item.position),
         speed: item.speed
@@ -220,12 +225,17 @@ function pathDrawing(item, trail){
     Render.startViewTransform(render);
     render.context.globalAlpha = 0.7;
 
-    for (var i = 0; i < trail.length; i += 1) {
-        var point = trail[i].position
+    render.context.beginPath();
+    render.context.moveTo(trail[0].position.x, trail[0].position.y);
 
-        render.context.fillStyle = 'white';
-        render.context.fillRect(point.x, point.y, 0.5, 2);
+    for (var i = 1; i < trail.length; i += 1) {
+        var point = trail[i].position;
+        render.context.lineTo(point.x, point.y);
     }
+
+    render.context.strokeStyle = 'white';
+    render.context.lineWidth = 2; // Установите желаемую толщину линии
+    render.context.stroke();
 
     render.context.globalAlpha = 1;
     Render.endViewTransform(render);
@@ -233,4 +243,45 @@ function pathDrawing(item, trail){
     if (trail.length > 3000) {
         trail.pop();
     }
+}
+
+function drawVectors() {
+    const context = render.context;
+
+    // Вектор скорости v для ядра
+    const vx = parseFloat(document.getElementById('vx-value').textContent);
+    const vy = parseFloat(document.getElementById('vy-value').textContent);
+    const vStart = kernel.position;
+    const vEnd = Vector.create(vx, -vy);
+
+    context.beginPath();
+    context.moveTo(vStart.x, vStart.y);
+    context.lineTo(vStart.x + vEnd.x, vStart.y + vEnd.y);
+    context.strokeStyle = 'gray';
+    context.stroke();
+
+    // Вектор силы тяжести mg для ядра
+    const mg = Vector.create(0, m * g);
+    const mgNormalized = Vector.normalise(mg);
+    const mgScale = 30;
+    const mgEnd = Vector.mult(mgNormalized, mgScale);
+    const mgStart = kernel.position;
+
+    context.beginPath();
+    context.moveTo(mgStart.x, mgStart.y);
+    context.lineTo(mgStart.x + mgEnd.x, mgStart.y + mgEnd.y);
+    context.strokeStyle = 'gray';
+    context.stroke();
+
+    // Вектор скорости u для пушки
+    const u = Vector.create(-1, 0);
+    const uMagnitude = 25;
+    const uEnd = Vector.mult(u, uMagnitude);
+    const uStart = cannon.position;
+
+    context.beginPath();
+    context.moveTo(uStart.x, uStart.y);
+    context.lineTo(uStart.x + uEnd.x, uStart.y + uEnd.y);
+    context.strokeStyle = 'gray';
+    context.stroke();
 }
