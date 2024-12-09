@@ -233,5 +233,5 @@ errorCloseButton.addEventListener('click', () => toggleError(true));
 const inputCheck = [
     {f: () => getTIFValue(inp.r) * 2 <= getLFValue(log.L) - getLFValue(log.u) * getLFValue(log.T), onErr: "радиус большой и он больше длины полета = хуйня"},
     {f: () => Math.abs((getTIFValue(inp.m) / (4 / 3 * PI * getTIFValue(inp.r) ** 3)) - 5000) <= 10000, onErr: "плотность снаряда должна быть в границах ..."},
-    {f: () => , onErr: "плотность снаряда должна быть в границах ..."},
+    // {f: () => , onErr: "плотность снаряда должна быть в границах ..."},
 ]
