@@ -25,6 +25,7 @@ let g;
 let h;
 let r;
 let wheelsUnlocked;
+let isPathHasBeenAlreadyDrawn = false;
 document.querySelector('.time-slider').noUiSlider.on('slide', function() {
     Matter.Body.setPosition(kernel, {
         x: parseFloat(document.getElementById('x-value').textContent) + canvas.width / 7, //+23
@@ -79,8 +80,6 @@ document.querySelector('.simulate').addEventListener('click', function(event) {
     if (canSimulate) {
         canSimulate = false;
 
-
-
         var trail = [];
 
         Events.on(render, 'afterRender', function() {
@@ -97,6 +96,7 @@ document.querySelector('.simulate').addEventListener('click', function(event) {
             if (newValue >= maxValue) {
                 slider.noUiSlider.set(maxValue);
                 clearInterval(sliderInterval); // Остановить интервал, когда достигнут максимум
+                isPathHasBeenAlreadyDrawn = true;
             } else {
                 slider.noUiSlider.set(newValue);
             }
@@ -106,7 +106,7 @@ document.querySelector('.simulate').addEventListener('click', function(event) {
 
 document.querySelector('.fst-page__generate').addEventListener('click', function(event) {
     event.preventDefault();
-
+    isPathHasBeenAlreadyDrawn = false;
     a = parseFloat(document.getElementById("alpha").value);
     M = parseFloat(document.getElementById("m-gun").value);
     m = parseFloat(document.getElementById("m-kernel").value);
@@ -217,32 +217,34 @@ function calculateRadius(volume) {
 }
 
 function pathDrawing(item, trail) {
-    trail.unshift({
-        position: Vector.clone(item.position),
-        speed: item.speed
-    });
+    if (!isPathHasBeenAlreadyDrawn) {
+        trail.unshift({
+            position: Vector.clone(item.position),
+            speed: item.speed
+        });
 
-    Render.startViewTransform(render);
-    render.context.globalAlpha = 0.7;
-
-    render.context.beginPath();
-    render.context.moveTo(trail[0].position.x, trail[0].position.y);
-
-    for (var i = 1; i < trail.length; i += 1) {
-        var point = trail[i].position;
-        render.context.lineTo(point.x, point.y);
+        Render.startViewTransform(render);
+        render.context.globalAlpha = 0.7;
     }
 
-    render.context.strokeStyle = 'white';
-    render.context.lineWidth = 2; // Установите желаемую толщину линии
-    render.context.stroke();
+        render.context.beginPath();
+        render.context.moveTo(trail[0].position.x, trail[0].position.y);
 
-    render.context.globalAlpha = 1;
-    Render.endViewTransform(render);
+        for (var i = 1; i < trail.length; i += 1) {
+            var point = trail[i].position;
+            render.context.lineTo(point.x, point.y);
+        }
 
-    if (trail.length > 3000) {
-        trail.pop();
-    }
+        render.context.strokeStyle = 'white';
+        render.context.lineWidth = 2; // Установите желаемую толщину линии
+        render.context.stroke();
+
+        render.context.globalAlpha = 1;
+        Render.endViewTransform(render);
+
+        if (trail.length > 3000) {
+            trail.pop();
+        }
 }
 
 function drawVectors() {
@@ -274,14 +276,28 @@ function drawVectors() {
     context.stroke();
 
     // Вектор скорости u для пушки
-    const u = Vector.create(-1, 0);
-    const uMagnitude = 25;
-    const uEnd = Vector.mult(u, uMagnitude);
-    const uStart = cannon.position;
+    if (parseFloat(document.getElementById('u-value').textContent) !== 0) {
+        const u = Vector.create(-1, 0);
+        const uMagnitude = 25;
+        const uEnd = Vector.mult(u, uMagnitude);
+        const uStart = cannon.position;
+
+        context.beginPath();
+        context.moveTo(uStart.x, uStart.y);
+        context.lineTo(uStart.x + uEnd.x, uStart.y + uEnd.y);
+        context.strokeStyle = 'gray';
+        context.stroke();
+    }
+
+    const mg1 = Vector.create(0, M * g);
+    const mg1Normalized = Vector.normalise(mg1);
+    const mg1Scale = 15;
+    const mg1End = Vector.mult(mg1Normalized, mg1Scale);
+    const mg1Start = cannon.position;
 
     context.beginPath();
-    context.moveTo(uStart.x, uStart.y);
-    context.lineTo(uStart.x + uEnd.x, uStart.y + uEnd.y);
+    context.moveTo(mg1Start.x, mg1Start.y);
+    context.lineTo(mg1Start.x + mg1End.x, mg1Start.y + mg1End.y);
     context.strokeStyle = 'gray';
     context.stroke();
 }
