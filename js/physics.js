@@ -1,12 +1,12 @@
 let engine;
 let world;
-const canvas = document.querySelector('.snd-page__display');
+const canvas = document.querySelector('.display');
 let render;
 const Render = Matter.Render;
 let canSimulate = false;
 const Events = Matter.Events;
 const Vector = Matter.Vector;
-const k = 3;  // Коэффициент сопротивления воздуха
+// const k = 3;  // Коэффициент сопротивления воздуха
 let kernel;
 let cannon;
 let sliderInterval;
@@ -63,7 +63,7 @@ document.querySelector('.time-slider').noUiSlider.on('set', function() {
     }
 });
 
-document.querySelector('.snd-page__simulate').addEventListener('click', function(event) {
+document.querySelector('.simulate').addEventListener('click', function(event) {
     event.preventDefault();
     if (canSimulate) {
         canSimulate = false;
@@ -118,9 +118,9 @@ document.querySelector('.snd-page__simulate').addEventListener('click', function
                 slider.noUiSlider.set(newValue);
             }
         }, 1); // Интервал в миллисекундах (например, 1000 мс = 1 секунда)
-        Events.on(engine, 'beforeUpdate', function() {
-            applyAirResistance(kernel);
-        });
+        // Events.on(engine, 'beforeUpdate', function() {
+        //     applyAirResistance(kernel);
+        // });
     }
 });
 
@@ -159,6 +159,7 @@ document.querySelector('.fst-page__generate').addEventListener('click', function
         height = width * 0.75;
     }
     else {
+
         if (H > firstHeight && H < 2000) {
             height = firstHeight + parseFloat(document.getElementById("H-value").textContent);
             console.log("A");
@@ -254,7 +255,7 @@ function pathDrawing(item, trail){
 
 function applyAirResistance(body) {
     const velocity = body.velocity;
-    const dragForceX = -k * velocity.x;
-    const dragForceY = -k * velocity.y;
+    // const dragForceX = -k * velocity.x;
+    // const dragForceY = -k * velocity.y;
     Matter.Body.applyForce(body, body.position, { x: dragForceX, y: dragForceY });
 }
