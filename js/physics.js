@@ -8,6 +8,9 @@ const Events = Matter.Events;
 const Vector = Matter.Vector;
 let kernel;
 let cannon;
+let topBoundary;
+let leftBoundary;
+let rightBoundary;
 let sliderInterval;
 let radius;
 let showRadius;
@@ -31,6 +34,18 @@ document.querySelector('.time-slider').noUiSlider.on('slide', function() {
         x: -(parseFloat(document.getElementById('u-value').textContent) * parseFloat(document.getElementById('t-value').textContent) - canvas.width / 7), //сделать тут не через скорость, а через x и y координаты пушки.
         y: canvas.height - h / 2 - 5
     });
+    Matter.Body.setPosition(topBoundary, {
+        x: -(parseFloat(document.getElementById('u-value').textContent) * parseFloat(document.getElementById('t-value').textContent) - canvas.width / 7), //сделать тут не через скорость, а через x и y координаты пушки.
+        y: canvas.height - h - 5
+    });
+    Matter.Body.setPosition(leftBoundary, {
+        x: -(parseFloat(document.getElementById('u-value').textContent) * parseFloat(document.getElementById('t-value').textContent) - canvas.width / 7) - 45, //сделать тут не через скорость, а через x и y координаты пушки.
+        y: canvas.height - h / 2 - 5
+    });
+    Matter.Body.setPosition(rightBoundary, {
+        x: -(parseFloat(document.getElementById('u-value').textContent) * parseFloat(document.getElementById('t-value').textContent) - canvas.width / 7) + 45, //сделать тут не через скорость, а через x и y координаты пушки.
+        y: canvas.height - h / 2 - 5
+    });
 });
 document.querySelector('.time-slider').noUiSlider.on('set', function() {
     try {
@@ -40,6 +55,18 @@ document.querySelector('.time-slider').noUiSlider.on('set', function() {
         });
         Matter.Body.setPosition(cannon, {
             x: -(parseFloat(document.getElementById('u-value').textContent) * parseFloat(document.getElementById('t-value').textContent) - canvas.width / 7), //сделать тут не через скорость, а через x и y координаты пушки.
+            y: canvas.height - h / 2 - 5
+        });
+        Matter.Body.setPosition(topBoundary, {
+            x: -(parseFloat(document.getElementById('u-value').textContent) * parseFloat(document.getElementById('t-value').textContent) - canvas.width / 7), //сделать тут не через скорость, а через x и y координаты пушки.
+            y: canvas.height - h - 5
+        });
+        Matter.Body.setPosition(leftBoundary, {
+            x: -(parseFloat(document.getElementById('u-value').textContent) * parseFloat(document.getElementById('t-value').textContent) - canvas.width / 7) - 45, //сделать тут не через скорость, а через x и y координаты пушки.
+            y: canvas.height - h / 2 - 5
+        });
+        Matter.Body.setPosition(rightBoundary, {
+            x: -(parseFloat(document.getElementById('u-value').textContent) * parseFloat(document.getElementById('t-value').textContent) - canvas.width / 7) + 45, //сделать тут не через скорость, а через x и y координаты пушки.
             y: canvas.height - h / 2 - 5
         });
     } catch (ExeptionError) {
@@ -159,10 +186,12 @@ document.querySelector('.fst-page__generate').addEventListener('click', function
     const ground = Matter.Bodies.rectangle(canvas.width / 2, canvas.height + 40, canvas.width, 90, { isStatic: true, render: { fillStyle: 'white' } });
     const topWall = Matter.Bodies.rectangle(canvas.width / 2, 0, canvas.width, 10, { isStatic: true, render: { fillStyle: 'transparent' } });
     Matter.World.add(world, [ground, topWall]);
-
+    topBoundary = Matter.Bodies.rectangle(canvas.width / 7, canvas.height - h - 5, 45 + 45, 1, { isStatic: true, render: { fillStyle: 'white' } });
+    leftBoundary = Matter.Bodies.rectangle(canvas.width / 7 + 45, canvas.height - h / 2 - 5, 1, h, { isStatic: true, render: { fillStyle: 'white' } });
+    rightBoundary = Matter.Bodies.rectangle(canvas.width / 7 - 45, canvas.height - h / 2 - 5, 1, h, { isStatic: true, render: { fillStyle: 'white' } });
+    Matter.World.add(world, [topBoundary, leftBoundary, rightBoundary]);
     //----------------------------------------
-
-    cannon = Matter.Bodies.rectangle(canvas.width / 7, canvas.height - h / 2 - 5, 45, h, { restitution: 0, render: { fillStyle: 'white',sprite: {
+    cannon = Matter.Bodies.rectangle(canvas.width / 7, canvas.height - h / 2 - 5, 45, h, { restitution: 0, isStatic: true, render: { fillStyle: 'white',sprite: {
                 texture: './img/gun.png'
             } } });
     Matter.Body.setMass(cannon, parseFloat(document.getElementById("m-gun").value));
