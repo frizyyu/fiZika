@@ -76,7 +76,7 @@ const setLFValue = (field, val) => field.textContent = parseFloat(val).toFixed(M
 
 // -------------------------------------------------------------------------------------------------------- //
 
-const TIKList = ['a', 'M', 'm', 'v0', 'g', 'h', 'V'];
+const TIKList = ['a', 'M', 'm', 'v0', 'g', 'h', 'r'];
 const CIK = 'aw';
 
 const IKList = [...TIKList, CIK];
@@ -108,7 +108,7 @@ function filterNumChars(event) {
     const value = tf.value;
     const last = tf.selectionStart - 1;
 
-    if (!/^-?\d*[.,]?\d*$/.test(value)) tf.value = value.slice(0, last) + value.slice(last + 1);
+    if (!/^-?\d*[.,]?\d{0,2}$/.test(value)) tf.value = value.slice(0, last) + value.slice(last + 1);
     else updateIFState(tf, false);
 }
 
@@ -133,7 +133,10 @@ function validateTIF() {
         res &&= isValid;
     }
 
-    return res;
+    if (getTIFValue(inp.M) <= getTIFValue(inp.m)) ['m', 'M'].forEach(fld => updateIFState(inp[fld], true))
+    else return res
+
+    return false;
 }
 
 // -------------------------------------------------------------------------------------------------------- //
@@ -213,3 +216,22 @@ const genBtn = document.querySelector('.generate');
 genBtn.addEventListener('click', generate);
 
 // -------------------------------------------------------------------------------------------------------- //
+
+function toggleError(force) {
+    errorWindow.classList.toggle('hidden', force);
+    errorBlackout.classList.toggle('hidden', force);
+}
+
+const errorBlackout = document.querySelector('.blackout');
+const errorWindow = document.querySelector('.error__body');
+
+const errorCloseButton = document.querySelector('.error__close');
+errorCloseButton.addEventListener('click', () => toggleError(true));
+
+// -------------------------------------------------------------------------------------------------------- //
+
+const inputCheck = [
+    {f: () => getTIFValue(inp.r) * 2 <= getLFValue(log.L) - getLFValue(log.u) * getLFValue(log.T), onErr: "радиус большой и он больше длины полета = хуйня"},
+    {f: () => Math.abs((getTIFValue(inp.m) / (4 / 3 * PI * getTIFValue(inp.r) ** 3)) - 5000) <= 10000, onErr: "плотность снаряда должна быть в границах ..."},
+    {f: () => , onErr: "плотность снаряда должна быть в границах ..."},
+]

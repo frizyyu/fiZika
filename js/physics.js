@@ -20,7 +20,7 @@ let m;
 let v0;
 let g;
 let h;
-let V;
+let r;
 let wheelsUnlocked;
 document.querySelector('.time-slider').noUiSlider.on('slide', function() {
     Matter.Body.setPosition(kernel, {
@@ -51,7 +51,7 @@ document.querySelector('.simulate').addEventListener('click', function(event) {
     if (canSimulate) {
         canSimulate = false;
 
-        const volume = parseFloat(document.getElementById("V").value);
+        const volume = parseFloat(document.getElementById("r").value);
         radius = calculateRadius(volume);             //+23
         showRadius = calculateRadius(volume*300);
         kernel = Matter.Bodies.circle(canvas.width / 7, canvas.height - h - showRadius - 5, showRadius, {
@@ -102,7 +102,7 @@ document.querySelector('.fst-page__generate').addEventListener('click', function
     v0 = parseFloat(document.getElementById("v0").value);
     g = parseFloat(document.getElementById("g").value);
     h = parseFloat(document.getElementById("h").value);
-    V = parseFloat(document.getElementById("V").value);
+    r = parseFloat(document.getElementById("r").value);
     wheelsUnlocked = document.getElementById("wheels").state;
     clearInterval(sliderInterval);
     slider.noUiSlider.set(slider.noUiSlider.options.range.min);
