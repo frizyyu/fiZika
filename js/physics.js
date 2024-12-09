@@ -28,6 +28,10 @@ document.querySelector('.time-slider').noUiSlider.on('slide', function() {
         x: parseFloat(document.getElementById('x-value').textContent) + canvas.width / 7, //+23
         y: canvas.height - parseFloat(document.getElementById('y-value').textContent) - 6 - showRadius
     });
+    Matter.Body.setPosition(cannon, {
+        x: -(parseFloat(document.getElementById('u-value').textContent) * parseFloat(document.getElementById('t-value').textContent) - canvas.width / 7), //сделать тут не через скорость, а через x и y координаты пушки.
+        y: canvas.height - h / 2 - 5
+    });
 });
 document.querySelector('.time-slider').noUiSlider.on('set', function() {
     try {
@@ -35,30 +39,10 @@ document.querySelector('.time-slider').noUiSlider.on('set', function() {
             x: parseFloat(document.getElementById('x-value').textContent) + canvas.width / 7, //+23
             y: canvas.height - parseFloat(document.getElementById('y-value').textContent) - 6 - showRadius
         });
-        /*Matter.Body.setVelocity(kernel, {
-            x: parseFloat(document.getElementById('vx-value').textContent)/10,
-            y: parseFloat(document.getElementById('vy-value').textContent)/10
-        });*/
-        Matter.Body.setVelocity(cannon, {
-            x: parseFloat(document.getElementById('u-value').textContent)/10, //сделать тут не через скорость, а через x и y координаты пушки.
-            y: 0
-        })
-        //+ странно, что при изменении массы/объёма не меняется траектория полёта (добавить сопротивление воздуха + силу тяжести)
-        /*if (kernel.position.y <= canvas.height - radius - 6 && kernel.position.y >= canvas.height - radius - 7) {
-            console.log("AQWEQWEQWE")
-            world.gravity.y = 1;
-            Matter.Body.setVelocity(kernel, {
-                x: parseFloat(document.getElementById('vx-value').textContent),
-                y: parseFloat(document.getElementById('vy-value').textContent)
-            });
-        }
-        else {
-            world.gravity.y = 0;
-            Matter.Body.setVelocity(kernel, {
-                x: 0,
-                y: 0
-            });
-        }*/
+        Matter.Body.setPosition(cannon, {
+            x: -(parseFloat(document.getElementById('u-value').textContent) * parseFloat(document.getElementById('t-value').textContent) - canvas.width / 7), //сделать тут не через скорость, а через x и y координаты пушки.
+            y: canvas.height - h / 2 - 5
+        });
     } catch (ExeptionError) {
     }
 });
@@ -67,15 +51,6 @@ document.querySelector('.simulate').addEventListener('click', function(event) {
     event.preventDefault();
     if (canSimulate) {
         canSimulate = false;
-
-        /*const mouse = Matter.Mouse.create(render.canvas);
-        const mouseConstraint = Matter.MouseConstraint.create(engine, {
-            mouse: mouse,
-            constraint: {
-                stiffness: 0.2
-            }
-        });
-        Matter.World.add(world, mouseConstraint);*/
 
         const volume = parseFloat(document.getElementById("V").value);
         radius = calculateRadius(volume);             //+23
@@ -117,10 +92,7 @@ document.querySelector('.simulate').addEventListener('click', function(event) {
             } else {
                 slider.noUiSlider.set(newValue);
             }
-        }, 1); // Интервал в миллисекундах (например, 1000 мс = 1 секунда)
-        // Events.on(engine, 'beforeUpdate', function() {
-        //     applyAirResistance(kernel);
-        // });
+        }, 1);
     }
 });
 
@@ -189,10 +161,8 @@ document.querySelector('.fst-page__generate').addEventListener('click', function
 
     // барьеры
     const ground = Matter.Bodies.rectangle(canvas.width / 2, canvas.height + 40, canvas.width, 90, { isStatic: true, render: { fillStyle: 'white' } });
-    const leftWall = Matter.Bodies.rectangle(0, canvas.height / 2, 10, canvas.height, { isStatic: true, render: { fillStyle: 'transparent' } });
-    const rightWall = Matter.Bodies.rectangle(canvas.width, canvas.height / 2, 10, canvas.height, { isStatic: true, render: { fillStyle: 'transparent' } });
     const topWall = Matter.Bodies.rectangle(canvas.width / 2, 0, canvas.width, 10, { isStatic: true, render: { fillStyle: 'transparent' } });
-    Matter.World.add(world, [ground, leftWall, rightWall, topWall]);
+    Matter.World.add(world, [ground, topWall]);
 
     //----------------------------------------
 
@@ -200,19 +170,6 @@ document.querySelector('.fst-page__generate').addEventListener('click', function
                 texture: './img/gun.png'
             } } });
     Matter.Body.setMass(cannon, parseFloat(document.getElementById("m-gun").value));
-    /*Events.on(engine, 'beforeUpdate', function() {
-        if (cannon) {
-            // Сила гравитации
-            Matter.Body.applyForce(cannon, cannon.position, {
-                x: 0,
-                y: parseFloat(document.getElementById("m-gun").value) * g
-            });
-
-            // Сила сопротивления воздуха
-            //const dragForce = Vector.mult(kernel.velocity, -k);
-            //Matter.Body.applyForce(kernel, kernel.position, dragForce);
-        }
-    });*/
     var trailCannon = [];
 
     Events.on(render, 'afterRender', function() {
@@ -251,11 +208,4 @@ function pathDrawing(item, trail){
     if (trail.length > 3000) {
         trail.pop();
     }
-}
-
-function applyAirResistance(body) {
-    const velocity = body.velocity;
-    // const dragForceX = -k * velocity.x;
-    // const dragForceY = -k * velocity.y;
-    Matter.Body.applyForce(body, body.position, { x: dragForceX, y: dragForceY });
 }
