@@ -129,7 +129,7 @@ document.querySelector('.fst-page__generate').addEventListener('click', function
     const L = parseFloat(document.getElementById("L-value").textContent);
     const H = parseFloat(document.getElementById("H-value").textContent);
     if (L >= H) {
-        if (L > firstWidth && L < 2000) {
+        if (L > firstWidth && L <= 2000) {
             width = firstWidth + parseFloat(document.getElementById("L-value").textContent);
             console.log("A");
         } else if (L < 2000) {
@@ -145,7 +145,7 @@ document.querySelector('.fst-page__generate').addEventListener('click', function
     }
     else {
 
-        if (H > firstHeight && H < 2000) {
+        if (H > firstHeight && H <= 2000) {
             height = firstHeight + parseFloat(document.getElementById("H-value").textContent);
             console.log("A");
         } else if (L < 2000) {
@@ -277,9 +277,7 @@ function drawVectors() {
     const vxx = parseFloat(document.getElementById('vx-value').textContent);
     const vyy = parseFloat(document.getElementById('vy-value').textContent);
     const vStart = kernel.position;
-    const vVector = Vector.create(vxx, -vyy);
-    const vNormalized = Vector.normalise(vVector); // Нормализация вектора
-    const vEnd = Vector.mult(vNormalized, vectorLength); // Масштабирование до фиксированной длины
+    const vEnd = Vector.create(vxx, -vyy);
 
     render.context.strokeStyle = 'red';
     drawArrow(context, vStart.x, vStart.y, vStart.x + vEnd.x, vStart.y + vEnd.y);
@@ -287,7 +285,7 @@ function drawVectors() {
     // Подпись для вектора скорости v
     context.fillStyle = 'red';
     context.font = '12px Arial';
-    context.fillText(`v = (${vxx.toFixed(2)}, ${-vyy.toFixed(2)})`, vStart.x + vEnd.x + 5, vStart.y + vEnd.y);
+    context.fillText(`v`, vStart.x + vEnd.x + 5, vStart.y + vEnd.y);
 
     if (a !== 90) {
         // Вектор скорости vx для ядра
@@ -303,15 +301,14 @@ function drawVectors() {
         // Подпись для вектора скорости vx
         context.fillStyle = 'red';
         context.font = '12px Arial';
-        context.fillText(`vx = ${vx.toFixed(2)}`, vxStart.x + vxEnd.x + 5, vxStart.y + vxEnd.y);
+        context.fillText(`vx`, vxStart.x + vxEnd.x + 5, vxStart.y + vxEnd.y);
     }
 
     // Вектор скорости vy для ядра
+    // Вектор скорости vy для ядра
     const vy = parseFloat(document.getElementById('vy-value').textContent);
     const vyStart = kernel.position;
-    const vyVector = Vector.create(0, -vy);
-    const vyNormalized = Vector.normalise(vyVector); // Нормализация вектора
-    const vyEnd = Vector.mult(vyNormalized, vectorLength); // Масштабирование до фиксированной длины
+    const vyEnd = Vector.create(0, -vy);
 
     render.context.strokeStyle = 'red';
     drawArrow(context, vyStart.x, vyStart.y, vyStart.x + vyEnd.x, vyStart.y + vyEnd.y);
@@ -319,7 +316,7 @@ function drawVectors() {
     // Подпись для вектора скорости vy
     context.fillStyle = 'red';
     context.font = '12px Arial';
-    context.fillText(`vy = ${-vy.toFixed(2)}`, vyStart.x + vyEnd.x + 5, vyStart.y + vyEnd.y);
+    context.fillText(`vy`, vyStart.x + vyEnd.x + 5, vyStart.y + vyEnd.y);
 
     // Вектор скорости u для пушки
     if (parseFloat(document.getElementById('u-value').textContent) !== 0) {
@@ -334,7 +331,7 @@ function drawVectors() {
         // Подпись для вектора скорости u
         context.fillStyle = 'red';
         context.font = '12px Arial';
-        context.fillText(`u = ${parseFloat(document.getElementById('u-value').textContent).toFixed(2)}`, uStart.x + uEnd.x + 5, uStart.y + uEnd.y - 10);
+        context.fillText(`u`, uStart.x + uEnd.x + 5, uStart.y + uEnd.y - 10);
     }
 }
 
