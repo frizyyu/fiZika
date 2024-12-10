@@ -119,6 +119,9 @@ function calcAXL() {
 
 // -------------------------------------------------------------------------------------------------------- //
 
+let groupChangeList = [];
+const removeFailureToGroup = () => groupChangeList.forEach(tf => updateIFState(tf, false));
+
 function filterNumChars(event) {
     const tf = event.target;
 
@@ -131,6 +134,7 @@ function filterNumChars(event) {
 
 TIFList.forEach(tf => {
     tf.addEventListener('input', filterNumChars);
+    tf.addEventListener('input', removeFailureToGroup);
     tf.addEventListener('input', calcAXL);
     tf.addEventListener('paste', event => event.preventDefault());
 });
@@ -231,28 +235,28 @@ errorCloseButton.addEventListener('click', () => toggleError(true));
 const providedConstraints = [
     {
         f: () => getTIFValue(inp.m) * 10 <= getTIFValue(inp.M),
-        mes: "нереалистичные данные для пушки",
+        mes: "Масса снаряда не может превышать 10% от массы пушки. Убедитесь, что значения массы пушки и снаряда указаны правильно.",
         change: [inp.m, inp.M],
     },
     {
         f: () => getTIFValue(inp.r) * 4 <= getTIFValue(inp.h),
-        mes: "ядро больше пушки ...",
+        mes: "Высота пушки слишком мала по сравнению с радиусом снаряда. Увеличьте высоту пушки или уменьшите радиус снаряда.",
         change: [inp.h, inp.r],
     },
     {
-        f: () => getTIFValue(inp.r) * 4 <= max(getLFValue(log.L) - getLFValue(log.u) * getLFValue(log.T), getLFValue(log.H)),
-        mes: "радиус большой и он больше длины полета",
-        change: [inp.r],
+        f: () => getTIFValue(inp.r) * 4 <= max(getLFValue(log.L) + getLFValue(log.u) * getLFValue(log.T), getLFValue(log.H)),
+        mes: "Дальность или высота полёта снаряда слишком мала. Проверьте значения начальной скорости, ускорения свободного падения, массы и радиуса снаряда.",
+        change: [inp.m, inp.v0, inp.g, inp.r],
+    },
+    {
+        f: () => !isNaN(getLFValue(hnt.p)),
+        mes: "Плотность снаряда выходит за пределы допустимого диапазона - 5000 ≤ ρ ≤ 20000 кг/м³. Проверьте значения массы снаряда и его радиуса.",
+        change: [inp.m, inp.r],
     },
     {
         f: () => max(getLFValue(log.L), getLFValue(log.H)) <= 2000,
-        mes: "К сожалению, не хваит мощностей отобразить, дальность слишком большая",
-        change: [inp.v, inp.g],
-    },
-    {
-        f: () => Math.abs((getTIFValue(inp.m) / (4 / 3 * PI * getTIFValue(inp.r) ** 3)) - 7500) <= 12500,
-        mes: "плотность снаряда должна быть в границах ...",
-        change: [inp.m, inp.r],
+        mes: "Недостаточно вычислительных ресурсов. Измените значения входных данных и попробуйте снова.",
+        change: [inp.a, inp.v0, inp.g],
     },
 ];
 
@@ -264,6 +268,7 @@ function providedValidateTIF() {
         if (res) continue;
         toggleError(res, mes);
         change.forEach(fld => updateIFState(fld, !res));
+        groupChangeList = change;
         break;
     }
 
