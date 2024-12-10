@@ -77,7 +77,10 @@ document.querySelector('.time-slider').noUiSlider.on('set', function() {
 document.querySelector('.simulate').addEventListener('click', function(event) {
     event.preventDefault();
     if (canSimulate) {
+        event.target.disabled = true;
+        slider.noUiSlider.updateOptions({animate: false});
         slider.noUiSlider.set(slider.noUiSlider.options.range.min);
+        slider.noUiSlider.updateOptions({animate: true});
         canSimulate = false;
 
         var trail = [];
@@ -98,6 +101,7 @@ document.querySelector('.simulate').addEventListener('click', function(event) {
                 clearInterval(sliderInterval); // Остановить интервал, когда достигнут максимум
                 isPathHasBeenAlreadyDrawn = true;
                 canSimulate = true;
+                event.target.disabled = false;
                 slider.noUiSlider.enable()
             } else {
                 slider.noUiSlider.set(newValue);

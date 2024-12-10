@@ -72,7 +72,7 @@ const getCIFValue = field => field.checked;
 const updateIFState = (field, invalid) => field.closest('.input__item').classList.toggle('failed', invalid);
 
 const getLFValue = field => parseFloat(field.textContent);
-const setLFValue = (field, val, round = MAX_DECIMAL_PLACES) => field.textContent = parseFloat(val) ? parseFloat(val).toFixed(round) : val;
+const setLFValue = (field, val, round = MAX_DECIMAL_PLACES) => field.textContent = !isNaN(parseFloat(val)) ? parseFloat(val).toFixed(round) : val;
 
 // -------------------------------------------------------------------------------------------------------- //
 
@@ -81,18 +81,18 @@ const CIK = 'aw';
 
 const IKList = [...TIKList, CIK];
 const LKList = ['X', 'Y', 'T', 't', 'v', 'vx', 'vy', 'u', 'L', 'H', 'k'];
-const AKList = ['p'];
+const AKList = ['p', 'L', 'H'];
 
 const TIFList = document.querySelectorAll('.text-field');
 const CIF = document.querySelector('.checkbox');
 
 const IFList = [...TIFList, CIF];
 const LFList = document.querySelectorAll('.log-field');
-const AFList = document.querySelectorAll('.auxiliary-field');
+const AFList = document.querySelectorAll('.hint-field');
 
 const inp = listToDict(IKList, IFList);
 const log = listToDict(LKList, LFList);
-const axl = listToDict(AKList, AFList);
+const hnt = listToDict(AKList, AFList);
 
 // -------------------------------------------------------------------------------------------------------- //
 
@@ -106,10 +106,15 @@ const TIFValidate = listToDict(TIKList, TIFVList);
 // -------------------------------------------------------------------------------------------------------- //
 
 function calcAXL() {
-    const m = getTIFValue(inp.m);
-    const V = 4 / 3 * PI * getTIFValue(inp.r) ** 3;
-    const p = m / V;
-    setLFValue(axl.p, p ? (p > 25000 ? ">25000" : p) : null, p < 1 ? MAX_DECIMAL_PLACES: 0);
+    singleLFCalc();
+
+    const p = getTIFValue(inp.m) / (4 / 3 * PI * getTIFValue(inp.r) ** 3);
+    const L = getLFValue(log.L);
+    const H = getLFValue(log.H);
+
+    setLFValue(hnt.p, !isNaN(p) ? ((p > 20000) ? "> 20000" : ((p < 5000) ? "< 5000"  : p)) : "?", 0);
+    setLFValue(hnt.L, !isNaN(L) ? ((L > 2000) ? "> 2000" : L) : "?", (L && L < 1) ? MAX_DECIMAL_PLACES : 0);
+    setLFValue(hnt.H, !isNaN(H) ? ((H > 2000) ? "> 2000" : H) : "?", (H && H < 1) ? MAX_DECIMAL_PLACES : 0);
 }
 
 // -------------------------------------------------------------------------------------------------------- //
@@ -168,7 +173,7 @@ function singleLFCalc() {
     setLFValue(log.u, getCIFValue(inp.aw) ? m * vx / M : 0);
 
     setLFValue(log.T, T);
-    timeLFInit();
+    if (T) timeLFInit();
 
     setLFValue(log.L, vx * T);
     setLFValue(log.H, h + vy ** 2 / (2 * g));
@@ -193,7 +198,7 @@ function regularLFCalc(t = 0) {
     setLFValue(log.X, x);
     setLFValue(log.Y, h + v0 * sin(a) * t - g * t ** 2 / 2);
 
-    setLFValue(log.k, g / vx ** 2 / (1 + (tan(a) - g * x / vx ** 2) ** 2) ** 1.5, 6);
+    setLFValue(log.k, vx ? (g / vx ** 2 / (1 + (tan(a) - g * x / vx ** 2) ** 2) ** 1.5) : "?", 6);
 }
 
 // -------------------------------------------------------------------------------------------------------- //
@@ -235,14 +240,19 @@ const providedConstraints = [
         change: [inp.h, inp.r],
     },
     {
-        f: () => Math.abs((getTIFValue(inp.m) / (4 / 3 * PI * getTIFValue(inp.r) ** 3)) - 5000) <= 10000,
-        mes: "плотность снаряда должна быть в границах ...",
-        change: [inp.m, inp.r],
-    },
-    {
         f: () => getTIFValue(inp.r) * 4 <= max(getLFValue(log.L) - getLFValue(log.u) * getLFValue(log.T), getLFValue(log.H)),
         mes: "радиус большой и он больше длины полета",
         change: [inp.r],
+    },
+    {
+        f: () => max(getLFValue(log.L), getLFValue(log.H)) <= 2000,
+        mes: "К сожалению, не хваит мощностей отобразить, дальность слишком большая",
+        change: [inp.v, inp.g],
+    },
+    {
+        f: () => Math.abs((getTIFValue(inp.m) / (4 / 3 * PI * getTIFValue(inp.r) ** 3)) - 7500) <= 12500,
+        mes: "плотность снаряда должна быть в границах ...",
+        change: [inp.m, inp.r],
     },
 ];
 

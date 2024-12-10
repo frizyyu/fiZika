@@ -126,19 +126,20 @@
 
 .fst-page__right {
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
     gap: 30px;
 }
 
 .constraints {
-    height: 350px;
+    height: 380px;
 }
 
-.auxiliary {
-    height: 90px;
+.hint {
+    height: 100%;
 }
 
-.constraints__list, .auxiliary__list {
+.constraints__list, .hint__list {
     height: inherit;
     display: flex;
     flex-direction: column;
@@ -146,7 +147,7 @@
     margin: 0 50px;
 }
 
-.auxiliary__item  {
+.hint__item  {
     display: flex;
     justify-content: space-between;
 }
@@ -182,6 +183,10 @@
     pointer-events: auto;
 }
 
+.time-slider[disabled] {
+    opacity: 0.4;
+}
+
 .time-slider, .time-slider * {
     cursor: pointer;
 }
@@ -195,6 +200,11 @@
     height: 24px;
     border-radius: 50%;
     background-color: #4FFF38;
+}
+
+.time-slider[disabled] .noUi-connect,
+.time-slider[disabled] .noUi-handle {
+    background-color: #FF7878;
 }
 
 .time-slider .noUi-handle:before,
@@ -240,6 +250,7 @@
 
 .simulate:disabled {
     opacity: 0.4;
+    cursor: not-allowed;
 }
 
 /* ----------------- ERROR ----------------- */
