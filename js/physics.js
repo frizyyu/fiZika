@@ -77,10 +77,7 @@ document.querySelector('.time-slider').noUiSlider.on('set', function() {
 document.querySelector('.simulate').addEventListener('click', function(event) {
     event.preventDefault();
     if (canSimulate) {
-        event.target.disabled = true;
-        slider.noUiSlider.updateOptions({animate: false});
         slider.noUiSlider.set(slider.noUiSlider.options.range.min);
-        slider.noUiSlider.updateOptions({animate: true});
         canSimulate = false;
 
         var trail = [];
@@ -91,17 +88,17 @@ document.querySelector('.simulate').addEventListener('click', function(event) {
         });
 
         Matter.Runner.run(engine);
-
+        slider.noUiSlider.disable()
         const maxValue = slider.noUiSlider.options.range.max;
         sliderInterval = setInterval(function() {
             const currentValue = parseFloat(slider.noUiSlider.get());
-            const newValue = currentValue + slider.noUiSlider.options.step; // Увеличивайте значение на 1
+            const newValue = currentValue + 0.01; // Увеличивайте значение на 1
             if (newValue >= maxValue) {
                 slider.noUiSlider.set(maxValue);
                 clearInterval(sliderInterval); // Остановить интервал, когда достигнут максимум
                 isPathHasBeenAlreadyDrawn = true;
                 canSimulate = true;
-                event.target.disabled = false;
+                slider.noUiSlider.enable()
             } else {
                 slider.noUiSlider.set(newValue);
             }
@@ -127,6 +124,8 @@ document.querySelector('.fst-page__generate').addEventListener('click', function
     world = engine.world;
     let width;
     let height;
+    const minWidth = 600;
+    const minHeight = 600;
     const L = parseFloat(document.getElementById("L-value").textContent);
     const H = parseFloat(document.getElementById("H-value").textContent);
     if (L >= H) {
@@ -140,6 +139,8 @@ document.querySelector('.fst-page__generate').addEventListener('click', function
             width = firstWidth;
             console.log("C");
         }
+        if (width < minWidth)
+            width = minWidth;
         height = width * 0.75;
     }
     else {
@@ -154,8 +155,11 @@ document.querySelector('.fst-page__generate').addEventListener('click', function
             height = firstHeight;
             console.log("C");
         }
+        if (height < minHeight)
+            height = minHeight;
         width = height / 0.75;
     }
+    console.log(width)
 
     render = Matter.Render.create({
         canvas: canvas,
@@ -240,7 +244,7 @@ function pathDrawing(item, trail) {
         render.context.lineTo(point.x, point.y);
     }
 
-    render.context.strokeStyle = 'red';
+    render.context.strokeStyle = 'white';
     render.context.lineWidth = 2; // Установите желаемую толщину линии
     render.context.stroke();
 
@@ -267,29 +271,55 @@ function drawArrow(context, fromX, fromY, toX, toY) {
 
 function drawVectors() {
     const context = render.context;
+    const vectorLength = 50; // Фиксированная длина векторов
 
-    // Вектор скорости vx для ядра
-    const vx = parseFloat(document.getElementById('vx-value').textContent);
-    const vxStart = kernel.position;
-    const vxEnd = Vector.create(vx, 0);
+    // Вектор скорости v для ядра
+    const vxx = parseFloat(document.getElementById('vx-value').textContent);
+    const vyy = parseFloat(document.getElementById('vy-value').textContent);
+    const vStart = kernel.position;
+    const vVector = Vector.create(vxx, -vyy);
+    const vNormalized = Vector.normalise(vVector); // Нормализация вектора
+    const vEnd = Vector.mult(vNormalized, vectorLength); // Масштабирование до фиксированной длины
 
-    drawArrow(context, vxStart.x, vxStart.y, vxStart.x + vxEnd.x, vxStart.y + vxEnd.y);
+    render.context.strokeStyle = 'red';
+    drawArrow(context, vStart.x, vStart.y, vStart.x + vEnd.x, vStart.y + vEnd.y);
+
+    // Подпись для вектора скорости v
+    context.fillStyle = 'red';
+    context.font = '12px Arial';
+    context.fillText(`v = (${vxx.toFixed(2)}, ${-vyy.toFixed(2)})`, vStart.x + vEnd.x + 5, vStart.y + vEnd.y);
+
+    if (a !== 90) {
+        // Вектор скорости vx для ядра
+        const vx = parseFloat(document.getElementById('vx-value').textContent);
+        const vxStart = kernel.position;
+        const vxVector = Vector.create(vx, 0);
+        const vxNormalized = Vector.normalise(vxVector); // Нормализация вектора
+        const vxEnd = Vector.mult(vxNormalized, vectorLength); // Масштабирование до фиксированной длины
+
+        render.context.strokeStyle = 'red';
+        drawArrow(context, vxStart.x, vxStart.y, vxStart.x + vxEnd.x, vxStart.y + vxEnd.y);
+
+        // Подпись для вектора скорости vx
+        context.fillStyle = 'red';
+        context.font = '12px Arial';
+        context.fillText(`vx = ${vx.toFixed(2)}`, vxStart.x + vxEnd.x + 5, vxStart.y + vxEnd.y);
+    }
 
     // Вектор скорости vy для ядра
     const vy = parseFloat(document.getElementById('vy-value').textContent);
     const vyStart = kernel.position;
-    const vyEnd = Vector.create(0, -vy);
+    const vyVector = Vector.create(0, -vy);
+    const vyNormalized = Vector.normalise(vyVector); // Нормализация вектора
+    const vyEnd = Vector.mult(vyNormalized, vectorLength); // Масштабирование до фиксированной длины
 
+    render.context.strokeStyle = 'red';
     drawArrow(context, vyStart.x, vyStart.y, vyStart.x + vyEnd.x, vyStart.y + vyEnd.y);
 
-    // Вектор силы тяжести mg для ядра
-    /*const mg = Vector.create(0, m * g);
-    const mgNormalized = Vector.normalise(mg);
-    const mgScale = 30;
-    const mgEnd = Vector.mult(mgNormalized, mgScale);
-    const mgStart = kernel.position;
-
-    drawArrow(context, mgStart.x, mgStart.y, mgStart.x + mgEnd.x, mgStart.y + mgEnd.y);*/
+    // Подпись для вектора скорости vy
+    context.fillStyle = 'red';
+    context.font = '12px Arial';
+    context.fillText(`vy = ${-vy.toFixed(2)}`, vyStart.x + vyEnd.x + 5, vyStart.y + vyEnd.y);
 
     // Вектор скорости u для пушки
     if (parseFloat(document.getElementById('u-value').textContent) !== 0) {
@@ -298,29 +328,14 @@ function drawVectors() {
         const uEnd = Vector.mult(u, uMagnitude);
         const uStart = cannon.position;
 
+        render.context.strokeStyle = 'red';
         drawArrow(context, uStart.x, uStart.y, uStart.x + uEnd.x, uStart.y + uEnd.y);
+
+        // Подпись для вектора скорости u
+        context.fillStyle = 'red';
+        context.font = '12px Arial';
+        context.fillText(`u = ${parseFloat(document.getElementById('u-value').textContent).toFixed(2)}`, uStart.x + uEnd.x + 5, uStart.y + uEnd.y - 10);
     }
-
-    /*const mg1 = Vector.create(0, M * g);
-    const mg1Normalized = Vector.normalise(mg1);
-    const mg1Scale = 25;
-    const mg1End = Vector.mult(mg1Normalized, mg1Scale);
-    const mg1Start = cannon.position;
-
-    drawArrow(context, mg1Start.x, mg1Start.y, mg1Start.x + mg1End.x, mg1Start.y + mg1End.y);*/
-}
-
-function drawArrow(context, fromX, fromY, toX, toY) {
-    const headlen = 10; // Длина стрелки
-    const angle = Math.atan2(toY - fromY, toX - fromX);
-
-    context.beginPath();
-    context.moveTo(fromX, fromY);
-    context.lineTo(toX, toY);
-    context.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
-    context.moveTo(toX, toY);
-    context.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
-    context.stroke();
 }
 
 
