@@ -54,7 +54,7 @@
                                         </li>
                                         <li class="input__item">
                                             <label for="r" class="input__text">r&thinsp;(м)&thinsp;:</label>
-                                            <input type="text" id="r" placeholder="Объем снаряда" autocomplete="off"
+                                            <input type="text" id="r" placeholder="Радиус шарообразного снаряда" autocomplete="off"
                                                    class="input__field text-field text">
                                         </li>
                                         <li class="input__item">
@@ -76,25 +76,28 @@
                                             <p class="constraints__text constraint">0 <= a && a <= 90</p>
                                         </li>
                                         <li class="constraints__item">
-                                            <p class="constraints__text">0 < m < M</p>
+                                            <p class="constraints__text">0 < m < M ≤ 20000</p>
                                         </li>
                                         <li class="constraints__item disabled">
-                                            <p class="constraints__text constraint">0 < M</p>
+                                            <p class="constraints__text constraint">M <= 20000</p>
                                         </li>
                                         <li class="constraints__item disabled">
                                             <p class="constraints__text constraint">0 < m</p>
                                         </li>
                                         <li class="constraints__item">
-                                            <p class="constraints__text">0 < v<sub>0</sub></p>
+                                            <p class="constraints__text">50 ≤ v<sub>0</sub> ≤ 1000</p>
                                         </li>
                                         <li class="constraints__item disabled">
-                                            <p class="constraints__text constraint">0 < v0</p>
+                                            <p class="constraints__text constraint">50 <= v0 && v0 <= 2000</p>
                                         </li>
                                         <li class="constraints__item">
                                             <p class="constraints__text constraint">0 < g</p>
                                         </li>
                                         <li class="constraints__item">
-                                            <p class="constraints__text constraint">0 < h</p>
+                                            <p class="constraints__text">0 ≤ h ≤ 100</p>
+                                        </li>
+                                        <li class="constraints__item disabled">
+                                            <p class="constraints__text constraint">0 <= h && h <= 100</p>
                                         </li>
                                         <li class="constraints__item">
                                             <p class="constraints__text constraint">0 < r</p>
@@ -170,7 +173,7 @@
             </div>
         </div>
     </div>
-    <div class="main__error error blackout disabled">
+    <div class="main__error error blackout hidden">
         <div class="error__body block hidden">
             <div class="error__close block"></div>
             <h1 class="error__heading heading">Ошибка!</h1>

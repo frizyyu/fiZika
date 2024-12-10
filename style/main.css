@@ -250,7 +250,7 @@
     min-width: 100vw;
     min-height: 100vh;
     z-index: 100;
-    transition: opacity 0.5s ease;
+    transition: z-index 0.5s ease, opacity 0.5s ease;
 }
 
 .error.hidden {

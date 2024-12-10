@@ -108,7 +108,7 @@ function filterNumChars(event) {
     const value = tf.value;
     const last = tf.selectionStart - 1;
 
-    if (!/^-?\d*[.,]?\d{0,2}$/.test(value)) tf.value = value.slice(0, last) + value.slice(last + 1);
+    if (!/^-?\d*[.]?\d{0,2}$/.test(value)) tf.value = value.slice(0, last) + value.slice(last + 1);
     else updateIFState(tf, false);
 }
 
@@ -133,10 +133,7 @@ function validateTIF() {
         res &&= isValid;
     }
 
-    if (getTIFValue(inp.M) <= getTIFValue(inp.m)) ['m', 'M'].forEach(fld => updateIFState(inp[fld], true))
-    else return res
-
-    return false;
+    return res;
 }
 
 // -------------------------------------------------------------------------------------------------------- //
@@ -197,33 +194,20 @@ const refuseTimeBarUpdate = () => timeBar.noUiSlider.off('update', timeBarUpdate
 
 // -------------------------------------------------------------------------------------------------------- //
 
-function generate() {
-    if (!validateTIF()) return;
+function toggleError(force, message) {
 
-    if (!sliderChangeAllowed) allowSliderChange();
+    console.log(force, message);
 
-    refuseTimeBarUpdate();
-
-    singleLFCalc();
-    regularLFCalc();
-
-    allowTimeBarUpdate();
-
-    fullPageSlider.slideNext();
-}
-
-const genBtn = document.querySelector('.generate');
-genBtn.addEventListener('click', generate);
-
-// -------------------------------------------------------------------------------------------------------- //
-
-function toggleError(force) {
     errorWindow.classList.toggle('hidden', force);
     errorBlackout.classList.toggle('hidden', force);
+    if (message) errorMessage.textContent = message;
+
+    console.log(errorWindow, errorBlackout, errorMessage);
 }
 
 const errorBlackout = document.querySelector('.blackout');
 const errorWindow = document.querySelector('.error__body');
+const errorMessage = document.querySelector('.error__message');
 
 const errorCloseButton = document.querySelector('.error__close');
 errorCloseButton.addEventListener('click', () => toggleError(true));
@@ -231,7 +215,54 @@ errorCloseButton.addEventListener('click', () => toggleError(true));
 // -------------------------------------------------------------------------------------------------------- //
 
 const inputCheck = [
-    {f: () => getTIFValue(inp.r) * 2 <= getLFValue(log.L) - getLFValue(log.u) * getLFValue(log.T), onErr: "радиус большой и он больше длины полета = хуйня"},
-    {f: () => Math.abs((getTIFValue(inp.m) / (4 / 3 * PI * getTIFValue(inp.r) ** 3)) - 5000) <= 10000, onErr: "плотность снаряда должна быть в границах ..."},
-    // {f: () => , onErr: "плотность снаряда должна быть в границах ..."},
-]
+    {
+        f: () => getTIFValue(inp.m) * 10 <= getTIFValue(inp.M),
+        mes: "нереалистичные данные для пушки",
+        change: [inp.m, inp.M],
+    },
+    {
+        f: () => getTIFValue(inp.r) * 4 <= getLFValue(log.L) - getLFValue(log.u) * getLFValue(log.T),
+        mes: "радиус большой и он больше длины полета = хуйня",
+        change: [inp.r],
+    },
+    {
+        f: () => Math.abs((getTIFValue(inp.m) / (4 / 3 * PI * getTIFValue(inp.r) ** 3)) - 5000) <= 10000,
+        mes: "плотность снаряда должна быть в границах ...",
+        change: [inp.m, inp.r],
+    },
+];
+
+function providedValidateTIF() {
+    let res = true;
+
+    for (const {f, mes, change} of inputCheck) {
+        res &&= f();
+        if (res) continue;
+        toggleError(res, mes);
+        change.forEach(fld => updateIFState(fld, !res));
+        break;
+    }
+
+    return res;
+}
+
+// -------------------------------------------------------------------------------------------------------- //
+
+function generate() {
+    if (!validateTIF()) return;
+
+    refuseTimeBarUpdate();
+
+    singleLFCalc();
+    regularLFCalc();
+
+    if (!providedValidateTIF()) return;
+
+    if (!sliderChangeAllowed) allowSliderChange();
+    allowTimeBarUpdate();
+
+    fullPageSlider.slideNext();
+}
+
+const genBtn = document.querySelector('.generate');
+genBtn.addEventListener('click', generate);
