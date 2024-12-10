@@ -76,8 +76,8 @@ document.querySelector('.time-slider').noUiSlider.on('set', function() {
 
 document.querySelector('.simulate').addEventListener('click', function(event) {
     event.preventDefault();
-
     if (canSimulate) {
+        slider.noUiSlider.set(slider.noUiSlider.options.range.min);
         canSimulate = false;
 
         var trail = [];
@@ -97,6 +97,7 @@ document.querySelector('.simulate').addEventListener('click', function(event) {
                 slider.noUiSlider.set(maxValue);
                 clearInterval(sliderInterval); // Остановить интервал, когда достигнут максимум
                 isPathHasBeenAlreadyDrawn = true;
+                canSimulate = true;
             } else {
                 slider.noUiSlider.set(newValue);
             }
@@ -235,7 +236,7 @@ function pathDrawing(item, trail) {
         render.context.lineTo(point.x, point.y);
     }
 
-    render.context.strokeStyle = 'white';
+    render.context.strokeStyle = 'red';
     render.context.lineWidth = 2; // Установите желаемую толщину линии
     render.context.stroke();
 
@@ -263,22 +264,28 @@ function drawArrow(context, fromX, fromY, toX, toY) {
 function drawVectors() {
     const context = render.context;
 
-    // Вектор скорости v для ядра
+    // Вектор скорости vx для ядра
     const vx = parseFloat(document.getElementById('vx-value').textContent);
-    const vy = parseFloat(document.getElementById('vy-value').textContent);
-    const vStart = kernel.position;
-    const vEnd = Vector.create(vx, -vy);
+    const vxStart = kernel.position;
+    const vxEnd = Vector.create(vx, 0);
 
-    drawArrow(context, vStart.x, vStart.y, vStart.x + vEnd.x, vStart.y + vEnd.y);
+    drawArrow(context, vxStart.x, vxStart.y, vxStart.x + vxEnd.x, vxStart.y + vxEnd.y);
+
+    // Вектор скорости vy для ядра
+    const vy = parseFloat(document.getElementById('vy-value').textContent);
+    const vyStart = kernel.position;
+    const vyEnd = Vector.create(0, -vy);
+
+    drawArrow(context, vyStart.x, vyStart.y, vyStart.x + vyEnd.x, vyStart.y + vyEnd.y);
 
     // Вектор силы тяжести mg для ядра
-    const mg = Vector.create(0, m * g);
+    /*const mg = Vector.create(0, m * g);
     const mgNormalized = Vector.normalise(mg);
     const mgScale = 30;
     const mgEnd = Vector.mult(mgNormalized, mgScale);
     const mgStart = kernel.position;
 
-    drawArrow(context, mgStart.x, mgStart.y, mgStart.x + mgEnd.x, mgStart.y + mgEnd.y);
+    drawArrow(context, mgStart.x, mgStart.y, mgStart.x + mgEnd.x, mgStart.y + mgEnd.y);*/
 
     // Вектор скорости u для пушки
     if (parseFloat(document.getElementById('u-value').textContent) !== 0) {
@@ -290,12 +297,26 @@ function drawVectors() {
         drawArrow(context, uStart.x, uStart.y, uStart.x + uEnd.x, uStart.y + uEnd.y);
     }
 
-    const mg1 = Vector.create(0, M * g);
+    /*const mg1 = Vector.create(0, M * g);
     const mg1Normalized = Vector.normalise(mg1);
     const mg1Scale = 25;
     const mg1End = Vector.mult(mg1Normalized, mg1Scale);
     const mg1Start = cannon.position;
 
-    drawArrow(context, mg1Start.x, mg1Start.y, mg1Start.x + mg1End.x, mg1Start.y + mg1End.y);
+    drawArrow(context, mg1Start.x, mg1Start.y, mg1Start.x + mg1End.x, mg1Start.y + mg1End.y);*/
 }
+
+function drawArrow(context, fromX, fromY, toX, toY) {
+    const headlen = 10; // Длина стрелки
+    const angle = Math.atan2(toY - fromY, toX - fromX);
+
+    context.beginPath();
+    context.moveTo(fromX, fromY);
+    context.lineTo(toX, toY);
+    context.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+    context.moveTo(toX, toY);
+    context.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+    context.stroke();
+}
+
 
