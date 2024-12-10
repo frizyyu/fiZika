@@ -124,16 +124,31 @@
     transform: rotate(45deg);
 }
 
-.constraints {
-    height: 450px;
+.fst-page__right {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
 
-.constraints__list {
+.constraints {
+    height: 350px;
+}
+
+.auxiliary {
+    height: 90px;
+}
+
+.constraints__list, .auxiliary__list {
     height: inherit;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     margin: 0 50px;
+}
+
+.auxiliary__item  {
+    display: flex;
+    justify-content: space-between;
 }
 
 .fst-page__generate {
