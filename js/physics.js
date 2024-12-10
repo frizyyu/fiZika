@@ -227,24 +227,37 @@ function pathDrawing(item, trail) {
         render.context.globalAlpha = 0.7;
     }
 
-        render.context.beginPath();
-        render.context.moveTo(trail[0].position.x, trail[0].position.y);
+    render.context.beginPath();
+    render.context.moveTo(trail[0].position.x, trail[0].position.y);
 
-        for (var i = 1; i < trail.length; i += 1) {
-            var point = trail[i].position;
-            render.context.lineTo(point.x, point.y);
-        }
+    for (var i = 1; i < trail.length; i += 1) {
+        var point = trail[i].position;
+        render.context.lineTo(point.x, point.y);
+    }
 
-        render.context.strokeStyle = 'white';
-        render.context.lineWidth = 2; // Установите желаемую толщину линии
-        render.context.stroke();
+    render.context.strokeStyle = 'white';
+    render.context.lineWidth = 2; // Установите желаемую толщину линии
+    render.context.stroke();
 
-        render.context.globalAlpha = 1;
-        Render.endViewTransform(render);
+    render.context.globalAlpha = 1;
+    Render.endViewTransform(render);
 
-        if (trail.length > 3000) {
-            trail.pop();
-        }
+    if (trail.length > 3000) {
+        trail.pop();
+    }
+}
+
+function drawArrow(context, fromX, fromY, toX, toY) {
+    const headlen = 10; // Длина стрелки
+    const angle = Math.atan2(toY - fromY, toX - fromX);
+
+    context.beginPath();
+    context.moveTo(fromX, fromY);
+    context.lineTo(toX, toY);
+    context.lineTo(toX - headlen * Math.cos(angle - Math.PI / 6), toY - headlen * Math.sin(angle - Math.PI / 6));
+    context.moveTo(toX, toY);
+    context.lineTo(toX - headlen * Math.cos(angle + Math.PI / 6), toY - headlen * Math.sin(angle + Math.PI / 6));
+    context.stroke();
 }
 
 function drawVectors() {
@@ -256,11 +269,7 @@ function drawVectors() {
     const vStart = kernel.position;
     const vEnd = Vector.create(vx, -vy);
 
-    context.beginPath();
-    context.moveTo(vStart.x, vStart.y);
-    context.lineTo(vStart.x + vEnd.x, vStart.y + vEnd.y);
-    context.strokeStyle = 'gray';
-    context.stroke();
+    drawArrow(context, vStart.x, vStart.y, vStart.x + vEnd.x, vStart.y + vEnd.y);
 
     // Вектор силы тяжести mg для ядра
     const mg = Vector.create(0, m * g);
@@ -269,35 +278,24 @@ function drawVectors() {
     const mgEnd = Vector.mult(mgNormalized, mgScale);
     const mgStart = kernel.position;
 
-    context.beginPath();
-    context.moveTo(mgStart.x, mgStart.y);
-    context.lineTo(mgStart.x + mgEnd.x, mgStart.y + mgEnd.y);
-    context.strokeStyle = 'gray';
-    context.stroke();
+    drawArrow(context, mgStart.x, mgStart.y, mgStart.x + mgEnd.x, mgStart.y + mgEnd.y);
 
     // Вектор скорости u для пушки
     if (parseFloat(document.getElementById('u-value').textContent) !== 0) {
         const u = Vector.create(-1, 0);
-        const uMagnitude = 25;
+        const uMagnitude = 35;
         const uEnd = Vector.mult(u, uMagnitude);
         const uStart = cannon.position;
 
-        context.beginPath();
-        context.moveTo(uStart.x, uStart.y);
-        context.lineTo(uStart.x + uEnd.x, uStart.y + uEnd.y);
-        context.strokeStyle = 'gray';
-        context.stroke();
+        drawArrow(context, uStart.x, uStart.y, uStart.x + uEnd.x, uStart.y + uEnd.y);
     }
 
     const mg1 = Vector.create(0, M * g);
     const mg1Normalized = Vector.normalise(mg1);
-    const mg1Scale = 15;
+    const mg1Scale = 25;
     const mg1End = Vector.mult(mg1Normalized, mg1Scale);
     const mg1Start = cannon.position;
 
-    context.beginPath();
-    context.moveTo(mg1Start.x, mg1Start.y);
-    context.lineTo(mg1Start.x + mg1End.x, mg1Start.y + mg1End.y);
-    context.strokeStyle = 'gray';
-    context.stroke();
+    drawArrow(context, mg1Start.x, mg1Start.y, mg1Start.x + mg1End.x, mg1Start.y + mg1End.y);
 }
+
