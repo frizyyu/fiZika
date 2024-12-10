@@ -326,3 +326,49 @@
     font-size: 32px;
     text-align: left;
 }
+
+/* ----------------- MEDIA ----------------- */
+
+@media (max-width: 1800px) {
+    .fst-page__heading {
+        font-size: 60px;
+    }
+
+    .input {
+        width: 600px;
+        height: 550px;
+    }
+
+    .text-field {
+        height: 40px;
+    }
+
+    .checkbox-style {
+        width: 40px;
+        height: 40px;
+    }
+
+    .checkbox:checked + .checkbox-style:before {
+        width: 12px;
+        height: 24px;
+        left: 14px;
+    }
+
+    .constraints {
+        height: 320px;
+    }
+
+    .generate {
+        padding: 25px;
+        font-size: 24px;
+    }
+
+    .snd-page__inner {
+        width: 1200px;
+        height: 700px;
+    }
+
+    .log__list {
+        width: 250px;
+    }
+}
