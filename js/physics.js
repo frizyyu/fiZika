@@ -135,13 +135,10 @@ document.querySelector('.fst-page__generate').addEventListener('click', function
     if (L >= H) {
         if (L > firstWidth && L <= 2000) {
             width = firstWidth + parseFloat(document.getElementById("L-value").textContent);
-            console.log("A");
         } else if (L < 2000) {
             width = firstWidth - (firstWidth - parseFloat(document.getElementById("L-value").textContent)) + firstWidth / 7 + 30;
-            console.log("B");
         } else {
             width = firstWidth;
-            console.log("C");
         }
         if (width < minWidth)
             width = minWidth;
@@ -151,19 +148,15 @@ document.querySelector('.fst-page__generate').addEventListener('click', function
 
         if (H > firstHeight && H <= 2000) {
             height = firstHeight + parseFloat(document.getElementById("H-value").textContent);
-            console.log("A");
         } else if (L < 2000) {
             height = firstHeight - (firstHeight - parseFloat(document.getElementById("H-value").textContent)) + firstHeight / 7;
-            console.log("B");
         } else {
             height = firstHeight;
-            console.log("C");
         }
         if (height < minHeight)
             height = minHeight;
         width = height / 0.75;
     }
-    console.log(width)
 
     render = Matter.Render.create({
         canvas: canvas,
