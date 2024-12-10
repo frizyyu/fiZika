@@ -72,7 +72,7 @@ const getCIFValue = field => field.checked;
 const updateIFState = (field, invalid) => field.closest('.input__item').classList.toggle('failed', invalid);
 
 const getLFValue = field => parseFloat(field.textContent);
-const setLFValue = (field, val) => field.textContent = parseFloat(val).toFixed(MAX_DECIMAL_PLACES);
+const setLFValue = (field, val, round = MAX_DECIMAL_PLACES) => field.textContent = parseFloat(val).toFixed(round);
 
 // -------------------------------------------------------------------------------------------------------- //
 
@@ -180,7 +180,7 @@ function regularLFCalc(t = 0) {
     setLFValue(log.X, x);
     setLFValue(log.Y, h + v0 * sin(a) * t - g * t ** 2 / 2);
 
-    setLFValue(log.k, g / vx ** 2 / (1 + (tan(a) - g * x / vx ** 2) ** 2) ** 1.5);
+    setLFValue(log.k, g / vx ** 2 / (1 + (tan(a) - g * x / vx ** 2) ** 2) ** 1.5, 6);
 }
 
 // -------------------------------------------------------------------------------------------------------- //
@@ -191,18 +191,14 @@ const timeBarUpdate = (vals, handle) => regularLFCalc(vals[handle]);
 
 const allowTimeBarUpdate = () => timeBar.noUiSlider.on('update', timeBarUpdate);
 const refuseTimeBarUpdate = () => timeBar.noUiSlider.off('update', timeBarUpdate);
+const switchTimeBar = allow => allow ? timeBar.noUiSlider.enable() : timeBar.noUiSlider.disable();
 
 // -------------------------------------------------------------------------------------------------------- //
 
 function toggleError(force, message) {
-
-    console.log(force, message);
-
     errorWindow.classList.toggle('hidden', force);
     errorBlackout.classList.toggle('hidden', force);
     if (message) errorMessage.textContent = message;
-
-    console.log(errorWindow, errorBlackout, errorMessage);
 }
 
 const errorBlackout = document.querySelector('.blackout');
@@ -221,8 +217,13 @@ const inputCheck = [
         change: [inp.m, inp.M],
     },
     {
+        f: () => getTIFValue(inp.r) * 4 <= getTIFValue(inp.h),
+        mes: "ядро больше пушки ...",
+        change: [inp.h, inp.r],
+    },
+    {
         f: () => getTIFValue(inp.r) * 4 <= getLFValue(log.L) - getLFValue(log.u) * getLFValue(log.T),
-        mes: "радиус большой и он больше длины полета = хуйня",
+        mes: "радиус большой и он больше длины полета",
         change: [inp.r],
     },
     {
@@ -252,6 +253,7 @@ function generate() {
     if (!validateTIF()) return;
 
     refuseTimeBarUpdate();
+    switchTimeBar(false);
 
     singleLFCalc();
     regularLFCalc();
@@ -261,8 +263,12 @@ function generate() {
     if (!sliderChangeAllowed) allowSliderChange();
     allowTimeBarUpdate();
 
+    simulateButton.disabled = false;
+
     fullPageSlider.slideNext();
 }
 
-const genBtn = document.querySelector('.generate');
-genBtn.addEventListener('click', generate);
+const genButton = document.querySelector('.generate');
+genButton.addEventListener('click', generate);
+
+const simulateButton = document.querySelector('.simulate');

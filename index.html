@@ -91,7 +91,10 @@
                                             <p class="constraints__text constraint">50 <= v0 && v0 <= 2000</p>
                                         </li>
                                         <li class="constraints__item">
-                                            <p class="constraints__text constraint">0 < g</p>
+                                            <p class="constraints__text">0 < g ≤ 25</p>
+                                        </li>
+                                        <li class="constraints__item disabled">
+                                            <p class="constraints__text constraint">0 < g && g <= 25</p>
                                         </li>
                                         <li class="constraints__item">
                                             <p class="constraints__text">0 ≤ h ≤ 100</p>
@@ -114,7 +117,7 @@
                 <div class="container">
                     <div class="snd-page__inner">
                         <div class="snd-page__left">
-                            <canvas class="snd-page__display display block" width="800" height="650"></canvas>
+                            <canvas class="snd-page__display display block" width="800" height="600"></canvas>
                             <div class="log__time-slider time-slider"></div>
                         </div>
                         <div class="snd-page__right">
