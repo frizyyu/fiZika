@@ -2,7 +2,7 @@ const MAX_DECIMAL_PLACES = 2;
 
 // -------------------------------------------------------------------------------------------------------- //
 
-const {sin, cos, tan, sqrt, PI} = Math;
+const {sin, cos, tan, sqrt, max, PI} = Math;
 const rad = deg => deg * PI / 180;
 
 // -------------------------------------------------------------------------------------------------------- //
@@ -72,7 +72,7 @@ const getCIFValue = field => field.checked;
 const updateIFState = (field, invalid) => field.closest('.input__item').classList.toggle('failed', invalid);
 
 const getLFValue = field => parseFloat(field.textContent);
-const setLFValue = (field, val, round = MAX_DECIMAL_PLACES) => field.textContent = parseFloat(val).toFixed(round);
+const setLFValue = (field, val, round = MAX_DECIMAL_PLACES) => field.textContent = parseFloat(val) ? parseFloat(val).toFixed(round) : val;
 
 // -------------------------------------------------------------------------------------------------------- //
 
@@ -81,15 +81,18 @@ const CIK = 'aw';
 
 const IKList = [...TIKList, CIK];
 const LKList = ['X', 'Y', 'T', 't', 'v', 'vx', 'vy', 'u', 'L', 'H', 'k'];
+const AKList = ['p'];
 
 const TIFList = document.querySelectorAll('.text-field');
 const CIF = document.querySelector('.checkbox');
 
 const IFList = [...TIFList, CIF];
 const LFList = document.querySelectorAll('.log-field');
+const AFList = document.querySelectorAll('.auxiliary-field');
 
 const inp = listToDict(IKList, IFList);
 const log = listToDict(LKList, LFList);
+const axl = listToDict(AKList, AFList);
 
 // -------------------------------------------------------------------------------------------------------- //
 
@@ -99,6 +102,15 @@ const TIFCList = Array.from(document.querySelectorAll('.constraint')).map(val =>
 const TIFVList = TIKList.map((val, i) => createValidateFunction(val, TIFCList[i]));
 
 const TIFValidate = listToDict(TIKList, TIFVList);
+
+// -------------------------------------------------------------------------------------------------------- //
+
+function calcAXL() {
+    const m = getTIFValue(inp.m);
+    const V = 4 / 3 * PI * getTIFValue(inp.r) ** 3;
+    const p = m / V;
+    setLFValue(axl.p, p ? (p > 25000 ? ">25000" : p) : null, p < 1 ? MAX_DECIMAL_PLACES: 0);
+}
 
 // -------------------------------------------------------------------------------------------------------- //
 
@@ -114,6 +126,7 @@ function filterNumChars(event) {
 
 TIFList.forEach(tf => {
     tf.addEventListener('input', filterNumChars);
+    tf.addEventListener('input', calcAXL);
     tf.addEventListener('paste', event => event.preventDefault());
 });
 
@@ -210,7 +223,7 @@ errorCloseButton.addEventListener('click', () => toggleError(true));
 
 // -------------------------------------------------------------------------------------------------------- //
 
-const inputCheck = [
+const providedConstraints = [
     {
         f: () => getTIFValue(inp.m) * 10 <= getTIFValue(inp.M),
         mes: "нереалистичные данные для пушки",
@@ -222,21 +235,21 @@ const inputCheck = [
         change: [inp.h, inp.r],
     },
     {
-        f: () => getTIFValue(inp.r) * 4 <= getLFValue(log.L) - getLFValue(log.u) * getLFValue(log.T),
-        mes: "радиус большой и он больше длины полета",
-        change: [inp.r],
-    },
-    {
         f: () => Math.abs((getTIFValue(inp.m) / (4 / 3 * PI * getTIFValue(inp.r) ** 3)) - 5000) <= 10000,
         mes: "плотность снаряда должна быть в границах ...",
         change: [inp.m, inp.r],
+    },
+    {
+        f: () => getTIFValue(inp.r) * 4 <= max(getLFValue(log.L) - getLFValue(log.u) * getLFValue(log.T), getLFValue(log.H)),
+        mes: "радиус большой и он больше длины полета",
+        change: [inp.r],
     },
 ];
 
 function providedValidateTIF() {
     let res = true;
 
-    for (const {f, mes, change} of inputCheck) {
+    for (const {f, mes, change} of providedConstraints) {
         res &&= f();
         if (res) continue;
         toggleError(res, mes);

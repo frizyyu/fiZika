@@ -20,92 +20,104 @@
                         <h1 class="fst-page__heading heading">Моделирование движения пушки и снаряда</h1>
                         <div class="fst-page__body">
                             <div class="fst-page__interaction">
-                                <div class="fst-page__input input block">
-                                    <ul class="input__list">
-                                        <li class="input__item">
-                                            <label for="alpha" class="input__text">α&thinsp;(&#xb0;)&thinsp;:</label>
-                                            <input type="text" id="alpha" placeholder="Угол"
-                                                   autocomplete="off" class="input__field text-field text">
-                                        </li>
-                                        <li class="input__item">
-                                            <label for="m-gun" class="input__text">M&thinsp;(кг)&thinsp;:</label>
-                                            <input type="text" id="m-gun" placeholder="Масса пушки" autocomplete="off"
-                                                   class="input__field text-field text">
-                                        </li>
-                                        <li class="input__item">
-                                            <label for="m-kernel" class="input__text">m&thinsp;(кг)&thinsp;:</label>
-                                            <input type="text" id="m-kernel" placeholder="Масса снаряда"
-                                                   autocomplete="off" class="input__field text-field text">
-                                        </li>
-                                        <li class="input__item">
-                                            <label for="v0" class="input__text">v<sub>0</sub>&thinsp;(м/с)&thinsp;:</label>
-                                            <input type="text" id="v0" placeholder="Начальная скорость снаряда"
-                                                   autocomplete="off" class="input__field text-field text">
-                                        </li>
-                                        <li class="input__item">
-                                            <label for="g" class="input__text">g&thinsp;(м/с<sup>2</sup>)&thinsp;:</label>
-                                            <input type="text" id="g" placeholder="Ускорение свободного падения"
-                                                   autocomplete="off" class="input__field text-field text">
-                                        </li>
-                                        <li class="input__item">
-                                            <label for="h" class="input__text">h&thinsp;(м)&thinsp;:</label>
-                                            <input type="text" id="h" placeholder="Высота пушки" autocomplete="off"
-                                                   class="input__field text-field text">
-                                        </li>
-                                        <li class="input__item">
-                                            <label for="r" class="input__text">r&thinsp;(м)&thinsp;:</label>
-                                            <input type="text" id="r" placeholder="Радиус шарообразного снаряда" autocomplete="off"
-                                                   class="input__field text-field text">
-                                        </li>
-                                        <li class="input__item">
-                                            <label>
-                                                <span class="input__text">Разблокировать колеса&thinsp;:</span>
-                                                <input type="checkbox" id="wheels" autocomplete="off"
-                                                       class="input__field checkbox">
-                                                <span class="checkbox-style"></span>
-                                            </label>
-                                        </li>
-                                    </ul>
+                                <div class="fst-page__left">
+                                    <div class="fst-page__input input block">
+                                        <ul class="input__list">
+                                            <li class="input__item">
+                                                <label for="alpha" class="input__text">α&thinsp;(&#xb0;)&thinsp;:</label>
+                                                <input type="text" id="alpha" placeholder="Угол"
+                                                       autocomplete="off" class="input__field text-field text">
+                                            </li>
+                                            <li class="input__item">
+                                                <label for="m-gun" class="input__text">M&thinsp;(кг)&thinsp;:</label>
+                                                <input type="text" id="m-gun" placeholder="Масса пушки" autocomplete="off"
+                                                       class="input__field text-field text">
+                                            </li>
+                                            <li class="input__item">
+                                                <label for="m-kernel" class="input__text">m&thinsp;(кг)&thinsp;:</label>
+                                                <input type="text" id="m-kernel" placeholder="Масса снаряда"
+                                                       autocomplete="off" class="input__field text-field text">
+                                            </li>
+                                            <li class="input__item">
+                                                <label for="v0" class="input__text">v<sub>0</sub>&thinsp;(м/с)&thinsp;:</label>
+                                                <input type="text" id="v0" placeholder="Начальная скорость снаряда"
+                                                       autocomplete="off" class="input__field text-field text">
+                                            </li>
+                                            <li class="input__item">
+                                                <label for="g" class="input__text">g&thinsp;(м/с<sup>2</sup>)&thinsp;:</label>
+                                                <input type="text" id="g" placeholder="Ускорение свободного падения"
+                                                       autocomplete="off" class="input__field text-field text">
+                                            </li>
+                                            <li class="input__item">
+                                                <label for="h" class="input__text">h&thinsp;(м)&thinsp;:</label>
+                                                <input type="text" id="h" placeholder="Высота пушки" autocomplete="off"
+                                                       class="input__field text-field text">
+                                            </li>
+                                            <li class="input__item">
+                                                <label for="r" class="input__text">r&thinsp;(м)&thinsp;:</label>
+                                                <input type="text" id="r" placeholder="Радиус шарообразного снаряда" autocomplete="off"
+                                                       class="input__field text-field text">
+                                            </li>
+                                            <li class="input__item">
+                                                <label>
+                                                    <span class="input__text">Разблокировать колеса&thinsp;:</span>
+                                                    <input type="checkbox" id="wheels" autocomplete="off"
+                                                           class="input__field checkbox">
+                                                    <span class="checkbox-style"></span>
+                                                </label>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div class="fst-page__constraints constraints block">
-                                    <ul class="constraints__list">
-                                        <li class="constraints__item">
-                                            <p class="constraints__text">0 ≤ α ≤ 90</p>
-                                        </li>
-                                        <li class="constraints__item disabled">
-                                            <p class="constraints__text constraint">0 <= a && a <= 90</p>
-                                        </li>
-                                        <li class="constraints__item">
-                                            <p class="constraints__text">0 < m < M ≤ 20000</p>
-                                        </li>
-                                        <li class="constraints__item disabled">
-                                            <p class="constraints__text constraint">M <= 20000</p>
-                                        </li>
-                                        <li class="constraints__item disabled">
-                                            <p class="constraints__text constraint">0 < m</p>
-                                        </li>
-                                        <li class="constraints__item">
-                                            <p class="constraints__text">50 ≤ v<sub>0</sub> ≤ 1000</p>
-                                        </li>
-                                        <li class="constraints__item disabled">
-                                            <p class="constraints__text constraint">50 <= v0 && v0 <= 2000</p>
-                                        </li>
-                                        <li class="constraints__item">
-                                            <p class="constraints__text">0 < g ≤ 25</p>
-                                        </li>
-                                        <li class="constraints__item disabled">
-                                            <p class="constraints__text constraint">0 < g && g <= 25</p>
-                                        </li>
-                                        <li class="constraints__item">
-                                            <p class="constraints__text">0 ≤ h ≤ 100</p>
-                                        </li>
-                                        <li class="constraints__item disabled">
-                                            <p class="constraints__text constraint">0 <= h && h <= 100</p>
-                                        </li>
-                                        <li class="constraints__item">
-                                            <p class="constraints__text constraint">0 < r</p>
-                                        </li>
-                                    </ul>
+                                <div class="fst-page__right">
+                                    <div class="fst-page__constraints constraints block">
+                                        <ul class="constraints__list">
+                                            <li class="constraints__item">
+                                                <p class="constraints__text">0 ≤ α ≤ 90</p>
+                                            </li>
+                                            <li class="constraints__item disabled">
+                                                <p class="constraints__text constraint">0 <= a && a <= 90</p>
+                                            </li>
+                                            <li class="constraints__item">
+                                                <p class="constraints__text">0 < m < M ≤ 20000</p>
+                                            </li>
+                                            <li class="constraints__item disabled">
+                                                <p class="constraints__text constraint">M <= 20000</p>
+                                            </li>
+                                            <li class="constraints__item disabled">
+                                                <p class="constraints__text constraint">0 < m</p>
+                                            </li>
+                                            <li class="constraints__item">
+                                                <p class="constraints__text">50 ≤ v<sub>0</sub> ≤ 1000</p>
+                                            </li>
+                                            <li class="constraints__item disabled">
+                                                <p class="constraints__text constraint">50 <= v0 && v0 <= 2000</p>
+                                            </li>
+                                            <li class="constraints__item">
+                                                <p class="constraints__text">0 < g ≤ 25</p>
+                                            </li>
+                                            <li class="constraints__item disabled">
+                                                <p class="constraints__text constraint">0 < g && g <= 25</p>
+                                            </li>
+                                            <li class="constraints__item">
+                                                <p class="constraints__text">0 < r < h ≤ 100</p>
+                                            </li>
+                                            <li class="constraints__item disabled">
+                                                <p class="constraints__text constraint">0 < h && h <= 100</p>
+                                            </li>
+                                            <li class="constraints__item disabled">
+                                                <p class="constraints__text constraint">0 < r</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="fst-page__auxiliary auxiliary block">
+                                        <ul class="auxiliary__list">
+                                            <li class="auxiliary__item">
+                                                <p class="auxiliary__option">ρ&thinsp;(кг/м<sup>3</sup>)&thinsp;:&thinsp;</p>
+                                                <p class="auxiliary__value auxiliary-field"></p>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                             <button class="fst-page__generate generate block text">Генерировать</button>
