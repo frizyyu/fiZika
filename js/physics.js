@@ -77,10 +77,7 @@ document.querySelector('.time-slider').noUiSlider.on('set', function() {
 document.querySelector('.simulate').addEventListener('click', function(event) {
     event.preventDefault();
     if (canSimulate) {
-        event.target.disabled = true;
-        slider.noUiSlider.updateOptions({animate: false});
         slider.noUiSlider.set(slider.noUiSlider.options.range.min);
-        slider.noUiSlider.updateOptions({animate: true});
         canSimulate = false;
 
         var trail = [];
@@ -101,7 +98,6 @@ document.querySelector('.simulate').addEventListener('click', function(event) {
                 clearInterval(sliderInterval); // Остановить интервал, когда достигнут максимум
                 isPathHasBeenAlreadyDrawn = true;
                 canSimulate = true;
-                event.target.disabled = false;
                 slider.noUiSlider.enable()
             } else {
                 slider.noUiSlider.set(newValue);
@@ -295,9 +291,7 @@ function drawVectors() {
         // Вектор скорости vx для ядра
         const vx = parseFloat(document.getElementById('vx-value').textContent);
         const vxStart = kernel.position;
-        const vxVector = Vector.create(vx, 0);
-        const vxNormalized = Vector.normalise(vxVector); // Нормализация вектора
-        const vxEnd = Vector.mult(vxNormalized, vectorLength); // Масштабирование до фиксированной длины
+        const vxEnd = Vector.create(vx, 0);
 
         render.context.strokeStyle = 'red';
         drawArrow(context, vxStart.x, vxStart.y, vxStart.x + vxEnd.x, vxStart.y + vxEnd.y);
