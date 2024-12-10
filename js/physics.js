@@ -101,7 +101,7 @@ document.querySelector('.simulate').addEventListener('click', function(event) {
                 clearInterval(sliderInterval); // Остановить интервал, когда достигнут максимум
                 isPathHasBeenAlreadyDrawn = true;
                 canSimulate = true;
-                event.target.disabled = true;
+                event.target.disabled = false;
                 slider.noUiSlider.enable();
             } else {
                 slider.noUiSlider.set(newValue);
