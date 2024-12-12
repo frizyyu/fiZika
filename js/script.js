@@ -202,7 +202,7 @@ function regularLFCalc(t = 0) {
     setLFValue(log.X, x);
     setLFValue(log.Y, h + v0 * sin(a) * t - g * t ** 2 / 2);
 
-    setLFValue(log.k, vx ? (g / vx ** 2 / (1 + (tan(a) - g * x / vx ** 2) ** 2) ** 1.5) : "?", 6);
+    setLFValue(log.k, vx ? g * vx / (vx ** 2 + vy ** 2) ** 1.5 : "?", 6);
 }
 
 // -------------------------------------------------------------------------------------------------------- //
